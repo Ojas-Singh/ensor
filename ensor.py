@@ -3,6 +3,7 @@
 import sys
 import numpy as np
 from tempfile import TemporaryFile
+import bondlength as bld
 # import tensorflow as tf
 print ""
 print "  ______ _   _  _____  ____  _____   "
@@ -23,9 +24,12 @@ pdbdata=[N,X,Y,Z,A]
 
 def main():
     if len(sys.argv) == 1:
-        print "usage: ensor.py <PDB Filename> <singlebondlength> <delta_singlebondlength> <doublebondlength> <delta_doublebondlength> <triplebondlength> <delta_triplebondlength>"
+        print "use -help to explore options"
     elif sys.argv[1] == '-help':
-        print "Help Menu For ENSOR:"
+        print "Options For ENSOR:"
+        print "usage: ensor.py <PDB Filename>"
+        print "You can manipulate the bond length data under bondlength.py"
+        print ""
     else:
         script = sys.argv[0]
         filename = sys.argv[1]
@@ -40,15 +44,7 @@ def main():
                     pdbdata[3].append(float(line[47:54]))
                     pdbdata[4].append(line[77:78])
             o = len(pdbdata[0])
-            # for i in range (0,o):
-            #     print pdbdata[0][i],pdbdata[1][i],pdbdata[2][i],pdbdata[3][i],pdbdata[4][i]
             m = np.zeros((o,o))
-            d_single= float(sys.argv[2])
-            delta_single=float(sys.argv[3])
-            d_double=float(sys.argv[4])
-            delta_double=float(sys.argv[5])
-            d_triple=float(sys.argv[6])
-            delta_triple=float(sys.argv[7])
             for i in range (0,o):
                 for j in range (0,o):
                     x1=pdbdata[1][i]
@@ -58,21 +54,23 @@ def main():
                     y2=pdbdata[2][j]
                     z2=pdbdata[3][j]
                     d=((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2)**(0.5)
-                    # m[i][j]=d  
+                    name= str(pdbdata[4][i])+str(pdbdata[4][j])
+                    bd= bld.search(name)
                     
-                    
-                    if d < np.add(d_single,delta_single) and d> np.subtract(d_single,delta_single) :
+                    if np.subtract(bd[0][0],bd[0][1]) <= d <= np.add(bd[0][0],bd[0][1]):
                         m[i][j]=1
-                    if d< np.add(d_double,delta_double) and d> np.subtract(d_double,delta_double) :
+                    if np.subtract(bd[1][0],bd[1][1]) <= d <= np.add(bd[1][0],bd[1][1]):
                         m[i][j]=2
-                    if d< np.add(d_triple,delta_triple) and d> np.subtract(d_triple,delta_triple) :
+                    if np.subtract(bd[2][0],bd[2][1]) <= d <= np.add(bd[2][0],bd[2][1]):
                         m[i][j]=3
-                    
-            Con_matrix= TemporaryFile()
-            np.save('Con_matrix.npy',m)
-            # np.savetxt('Con_matrix.txt',m)      
-            print m
-            print 'Connectivity Matrix saved as Con_matrix.npy'
+                    if d==0:
+                        m[i][j]=0            
+        Con_matrix= TemporaryFile()
+        np.save('results/Con_matrix.npy',m)
+        # np.savetxt('Con_matrix.txt',m)      
+        print m
+        print 'Connectivity Matrix saved as Con_matrix.npy under results directory.'
+        
             
 
 
