@@ -1,9 +1,11 @@
-#PDB Format by https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/tutorials/pdbintro.html
+#PDB Format from https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/tutorials/pdbintro.html
 
 import sys
 import numpy as np
 from tempfile import TemporaryFile
 import bondlength as bld
+
+
 # import tensorflow as tf
 print ""
 print "  ______ _   _  _____  ____  _____   "
@@ -44,7 +46,9 @@ def main():
                     pdbdata[3].append(float(line[47:54]))
                     pdbdata[4].append(line[77:78])
             o = len(pdbdata[0])
-            m = np.zeros((o,o))
+            Connectivity_Matrix = np.zeros((o,o))
+            Adj_Matrix = np.zeros((o,o))
+            print "Computing Adjacency Matrix..."
             for i in range (0,o):
                 for j in range (0,i):
                     x1=pdbdata[1][i]
@@ -58,25 +62,113 @@ def main():
                     bd= bld.search(name)
                     
                     if np.subtract(bd[0][0],bd[0][1]) <= d <= np.add(bd[0][0],bd[0][1]):
-                        m[i][j]=1
-                        m[j][i]=1
+                        Connectivity_Matrix[i][j]=1
+                        Connectivity_Matrix[j][i]=1
+                        
                     if np.subtract(bd[1][0],bd[1][1]) <= d <= np.add(bd[1][0],bd[1][1]):
-                        m[i][j]=2
-                        m[j][i]=2
+                        Connectivity_Matrix[i][j]=2
+                        Connectivity_Matrix[j][i]=2
+                        
                     if np.subtract(bd[2][0],bd[2][1]) <= d <= np.add(bd[2][0],bd[2][1]):
-                        m[i][j]=3
-                        m[j][i]=3
+                        Connectivity_Matrix[i][j]=3
+                        Connectivity_Matrix[j][i]=3
+                        
                     if d==0:
-                        m[i][j]=0 
-                        m[j][i]=0
-            deg = np.zeros((o,o))
-            for i in range (0,o):
-                x=0
-                for j in range (0,o):
-                    if m[i][j] != 0:
-                        x=x+1
-                deg[i][i] = x
-        Lap = deg - m
+                        Connectivity_Matrix[i][j]=0 
+                        Connectivity_Matrix[j][i]=0
+                        
+
+                    #Resonance Correction 
+                    if np.subtract(bd[2][0],bd[2][1]) <= d <= np.add(bd[0][0],bd[0][1]):
+                        Adj_Matrix[i][j]=1
+                        Adj_Matrix[j][i]=1
+            
+            def Laplacian_matrix(Adjacency_Matrix):
+                Degree_Matrix = np.zeros((len(Adjacency_Matrix[0]),len(Adjacency_Matrix[0])))
+                for i in range (0,len(Adjacency_Matrix[0])):
+                    x=0
+                    for j in range (0,len(Adjacency_Matrix[0])):
+                        if Adjacency_Matrix[i][j] != 0:
+                            x=x+1
+                    Degree_Matrix[i][i] = x
+                laplacian_matrix = Degree_Matrix - Adjacency_Matrix
+                return laplacian_matrix
+            
+            def cutter(Adjacency_Matrix,x):
+                eigenvalues, eigenvectors = np.linalg.eigh(Laplacian_matrix(Adjacency_Matrix))
+                index_fnzev = np.argsort(eigenvalues)[1]
+                partition = [val >= 0 for val in eigenvectors[:, index_fnzev]]
+                a=[]
+                b=[]
+                for i in range (0,len(partition)):
+                    if partition[i]==True:
+                        a.append(i)
+                    else :
+                        b.append(i)
+                    for j in range (0,len(partition)):
+                        if Adjacency_Matrix[i][j]==1 and partition[i]!=partition[j]:
+                            x.append([i,j])
+                A=np.zeros((len(a),len(a)))
+                B=np.zeros((len(b),len(b)))
+                for i in range (0,len(a)):
+                    for j in range (0,len(a)):
+                        A[i][j]=Adjacency_Matrix[a[i]][a[j]]
+                for i in range (0,len(b)):
+                    for j in range (0,len(b)):
+                        B[i][j]=Adjacency_Matrix[b[i]][b[j]]
+                
+                return A,B,x
+
+
+            def nodes_edges(Adjacency_Matrix):
+                nodes=len(Adjacency_Matrix[0])
+                edges=0
+                for i in range (0,len(Adjacency_Matrix[0])):
+                    for j in range (0,i):
+                        if Adjacency_Matrix[i][j]==1:
+                            edges=edges+1
+                return nodes,edges
+            
+            def fragmenter(p):
+                Fragments=[]
+                connections=[]
+                x=[]
+                matrix=[Adj_Matrix]
+                def caller(matrix):
+                    for j in range (0,len(matrix)):
+                        # print matrix
+                        # print "for ",j,"len vlaue",len(matrix)
+                        m=matrix[j]
+                        
+                        matrix[j]=[]
+                        matrix[j].append(cutter(m,x)[0])
+                        matrix[j].append(cutter(m,x)[1])
+                    for j in range (0,len(matrix)):
+                        s1=matrix[j][0]
+                        s2=matrix[j][1]
+                        Fragments.append(s1)
+                        Fragments.append(s2)
+                 
+                for i in range (0,p/2):
+                    caller(matrix)
+                    matrix=Fragments
+                    Fragments=[]
+                    
+                return matrix
+
+            # print "Connectivity_Matrix :",Connectivity_Matrix
+            # print "Adj_Matrix :",Adj_Matrix
+            # print "Laplacian_matrix :",Laplacian_matrix(Adj_Matrix)
+            # print "A :",cutter(Adj_Matrix,[])[0]
+            # print "B :",cutter(Adj_Matrix,[])[1]
+            p=4
+            print "-------------------------------"
+            print nodes_edges(Adj_Matrix)
+            print len(fragmenter(p))
+            for i in range (0,len(fragmenter(p))):
+                print "Nodes and edges in part:",i,"is",nodes_edges(fragmenter(p)[i])
+
+            
         
                   
         # Con_matrix= TemporaryFile()
@@ -89,3 +181,7 @@ def main():
 
 if __name__ == '__main__':
    main()
+
+
+
+
