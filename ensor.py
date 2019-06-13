@@ -1,9 +1,12 @@
 #PDB Format from https://www.cgl.ucsf.edu/chimera/docs/UsersGuide/tutorials/pdbintro.html
-
+import matplotlib
+matplotlib.use('Agg')
 import sys
 import numpy as np
 from tempfile import TemporaryFile
 import bondlength as bld
+import networkx as nx
+import matplotlib.pyplot as plt
 
 
 # import tensorflow as tf
@@ -29,7 +32,7 @@ def main():
         print "use -help to explore options"
     elif sys.argv[1] == '-help':
         print "Options For ENSOR:"
-        print "usage: ensor.py <PDB Filename>"
+        print "usage: ensor.py <PDB Filename> <Fragments>"
         print "You can manipulate the bond length data under bondlength.py"
         print ""
     else:
@@ -156,20 +159,35 @@ def main():
                     
                 return matrix
 
-            # print "Connectivity_Matrix :",Connectivity_Matrix
-            # print "Adj_Matrix :",Adj_Matrix
-            # print "Laplacian_matrix :",Laplacian_matrix(Adj_Matrix)
+            
+            
             # print "A :",cutter(Adj_Matrix,[])[0]
             # print "B :",cutter(Adj_Matrix,[])[1]
-            p=4
-            print "-------------------------------"
-            print nodes_edges(Adj_Matrix)
-            print len(fragmenter(p))
-            for i in range (0,len(fragmenter(p))):
-                print "Nodes and edges in part:",i,"is",nodes_edges(fragmenter(p)[i])
+            # p=sys.argv[2]
+
+
+            print "Printing generated Graph to graph.png..."
+            G=nx.from_numpy_matrix(Adj_Matrix)
+            fig = plt.figure(figsize=(50,50))
+            ax = plt.subplot(111)
+            ax.set_title('PDB Graph', fontsize=100)
+            pos = nx.spring_layout(G)
+            nx.draw(G, pos, node_size=40, node_color='red', font_size=8, font_weight='bold')
+
+            plt.tight_layout()
+            
+            plt.savefig("graph.png")
+
+
+            # print nodes_edges(Adj_Matrix)
+            # print p
+            # print len(fragmenter(p))
+            # for i in range (0,len(fragmenter(p))):
+            #     print "Nodes and edges in part:",i,"is",nodes_edges(fragmenter(p)[i])
 
             
         
+        print "All Done glhf ;)"
                   
         # Con_matrix= TemporaryFile()
         # np.save('results/Con_matrix.npy',m)
