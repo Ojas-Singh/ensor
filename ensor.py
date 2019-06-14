@@ -32,7 +32,8 @@ def main():
         print "use -help to explore options"
     elif sys.argv[1] == '-help':
         print "Options For ENSOR:"
-        print "usage: ensor.py <PDB Filename> <Fragments>"
+        print "usage: ensor.py <PDB Filename> <Fragments> <graph> "
+        print "e.g : ensor.py PDB/mol.pdb 12 True"
         print "You can manipulate the bond length data under bondlength.py"
         print ""
     else:
@@ -87,20 +88,23 @@ def main():
                         Adj_Matrix[j][i]=1
             
             def Laplacian_matrix(Adjacency_Matrix):
-                Degree_Matrix = np.zeros((len(Adjacency_Matrix[0]),len(Adjacency_Matrix[0])))
-                for i in range (0,len(Adjacency_Matrix[0])):
-                    x=0
-                    for j in range (0,len(Adjacency_Matrix[0])):
-                        if Adjacency_Matrix[i][j] != 0:
-                            x=x+1
-                    Degree_Matrix[i][i] = x
+                Degree_Matrix =  np.diag(np.ravel(np.sum(Adjacency_Matrix,axis=1))) 
                 laplacian_matrix = Degree_Matrix - Adjacency_Matrix
                 return laplacian_matrix
-            
+            def check_symm(matrix):
+                for i in range (0,len(matrix)):
+                    x=True
+                    for j in range (0,len(matrix)):
+                        if matrix[i][j] != matrix[j][i] :
+                            x=False
+                return x
+
             def cutter(Adjacency_Matrix,x):
                 eigenvalues, eigenvectors = np.linalg.eigh(Laplacian_matrix(Adjacency_Matrix))
                 index_fnzev = np.argsort(eigenvalues)[1]
-                partition = [val >= 0 for val in eigenvectors[:, index_fnzev]]
+                fx = eigenvectors[:,index_fnzev] 
+                # f = nx.linalg.algebraicconnectivity.fiedler_vector(G,weight='weight', normalized=False, tol=1e-08, method='tracemin_pcg', seed=None)
+                partition = [val >= 0 for val in fx]
                 a=[]
                 b=[]
                 for i in range (0,len(partition)):
@@ -122,11 +126,10 @@ def main():
                 
                 return A,B,x
 
-
             def nodes_edges(Adjacency_Matrix):
-                nodes=len(Adjacency_Matrix[0])
+                nodes=len(Adjacency_Matrix)
                 edges=0
-                for i in range (0,len(Adjacency_Matrix[0])):
+                for i in range (0,len(Adjacency_Matrix)):
                     for j in range (0,i):
                         if Adjacency_Matrix[i][j]==1:
                             edges=edges+1
@@ -158,34 +161,42 @@ def main():
                     Fragments=[]
                     
                 return matrix
-
             
-            
-            # print "A :",cutter(Adj_Matrix,[])[0]
-            # print "B :",cutter(Adj_Matrix,[])[1]
-            # p=sys.argv[2]
-
-
-            print "Printing generated Graph to graph.png..."
             G=nx.from_numpy_matrix(Adj_Matrix)
-            fig = plt.figure(figsize=(50,50))
-            ax = plt.subplot(111)
-            ax.set_title('PDB Graph', fontsize=100)
-            pos = nx.spring_layout(G)
-            nx.draw(G, pos, node_size=40, node_color='red', font_size=8, font_weight='bold')
-
-            plt.tight_layout()
+            print "Is_Connected :",nx.is_connected(G)
+            print "Connected Components :",[len(c) for c in sorted(nx.connected_components(G), key=len, reverse=True)]
+            print "Nodes and Edges in graph :",nodes_edges(Adj_Matrix)
             
-            plt.savefig("graph.png")
+            p=int(sys.argv[2])
+            for i in range (0,len(fragmenter(p))):
+                print "Nodes and edges in part:",i,"is",nodes_edges(fragmenter(p)[i])
 
+            if str(sys.argv[3])=='True':
+                print "Printing generated Graph to graph.png..."
+                pos=nx.spring_layout(G) 
+                fig = plt.figure(figsize=(50,50))
+                labels={}
+                for i in range (0,len(pdbdata[4])):
+                    labels[i]=pdbdata[4][i]
+                options = {
+                'node_color': 'white',
+                'node_size': 500,
+                'line_color': 'grey',
+                'linewidths': 0,
+                'width': 2,
+                'edge_color':'white',
+                'with_labels':True,
+                'alpha':0.8,
+                'labels':labels,
+                'font_size':20,
+                'font_color':'grey'
+                }
+                nx.draw(G, **options)
+                plt.axis('off')
+                fig.set_facecolor("#000000")
+                plt.savefig("graph.png",facecolor=fig.get_facecolor())
 
-            # print nodes_edges(Adj_Matrix)
-            # print p
-            # print len(fragmenter(p))
-            # for i in range (0,len(fragmenter(p))):
-            #     print "Nodes and edges in part:",i,"is",nodes_edges(fragmenter(p)[i])
-
-            
+                print "Graph Saved!"
         
         print "All Done glhf ;)"
                   
