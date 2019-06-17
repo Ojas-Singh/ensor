@@ -112,7 +112,7 @@ def main():
                         a.append(i)
                     else :
                         b.append(i)
-                    for j in range (0,len(partition)):
+                    for j in range (0,i):
                         if Adjacency_Matrix[i][j]==1 and partition[i]!=partition[j]:
                             x.append([i,j])
                 A=np.zeros((len(a),len(a)))
@@ -160,7 +160,8 @@ def main():
                     matrix=Fragments
                     Fragments=[]
                     
-                return matrix
+                return matrix,x
+            
             
             G=nx.from_numpy_matrix(Adj_Matrix)
             print "Is_Connected :",nx.is_connected(G)
@@ -168,8 +169,12 @@ def main():
             print "Nodes and Edges in graph :",nodes_edges(Adj_Matrix)
             
             p=int(sys.argv[2])
-            for i in range (0,len(fragmenter(p))):
-                print "Nodes and edges in part:",i,"is",nodes_edges(fragmenter(p)[i])
+            frag=fragmenter(p)
+            for i in range (0,len(frag[0])):
+                print "Nodes and edges in part:",i,"is",nodes_edges(frag[0][i])
+            print "Edges between partitions :",frag[1]
+            x=[]
+            print cutter(Adj_Matrix,x)[2]
 
             if str(sys.argv[3])=='True':
                 print "Printing generated Graph to graph.png..."
