@@ -1,0 +1,7 @@
+numpy
+scipy
+matplotlib
+progressbar
+networkx
+panda
+random
