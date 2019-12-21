@@ -1,14 +1,9 @@
 import sys
-
-import matplotlib
-import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 from lib import fragrr as fg
 from lib import pdb2con as chef
 from lib import plotter as plotter
-
-matplotlib.use('Agg')
 
 print ""
 print "  ______ _   _  _____  ____  _____   "
