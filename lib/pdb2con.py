@@ -44,26 +44,28 @@ def pdb2con(filename):
                     d=((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2)**(0.5)
                     name= str(pdbdata[4][i])+str(pdbdata[4][j])
                     bd= bld.search(name)
-                    
-                    if np.subtract(bd[0][0],bd[0][1]) <= d <= np.add(bd[0][0],bd[0][1]):
-                        Connectivity_Matrix[i][j]=1
-                        Connectivity_Matrix[j][i]=1
+                    if d <= bd[0] and d>=0:
+                        w=-1*d**2*(bd[2]-1)/bd[0]**2 + bd[2]
+                        Connectivity_Matrix[i][j]= w
+                        Connectivity_Matrix[j][i]= w
+
+#                     if d>bd[1]:
+
                         
-                    if np.subtract(bd[1][0],bd[1][1]) <= d <= np.add(bd[1][0],bd[1][1]):
-                        Connectivity_Matrix[i][j]=2
-                        Connectivity_Matrix[j][i]=2
+                    if bd[0] < d <= bd[1]:
+                        # Connectivity_Matrix[i][j]=np.exp(-1*d-bd[1])-1
+                        # Connectivity_Matrix[j][i]=np.exp(-1*d-bd[1])-1
+                        w= bd[0]/d
+                        Connectivity_Matrix[i][j]=w**2
+                        Connectivity_Matrix[j][i]=w**2
+
                         
-                    if np.subtract(bd[2][0],bd[2][1]) <= d <= np.add(bd[2][0],bd[2][1]):
-                        Connectivity_Matrix[i][j]=3
-                        Connectivity_Matrix[j][i]=3
                         
                     if d==0:
                         Connectivity_Matrix[i][j]=0 
                         Connectivity_Matrix[j][i]=0
                         
-
-                    #Resonance Correction 
-                    if np.subtract(bd[2][0],bd[2][1]) <= d <= np.add(bd[0][0],bd[0][1]):
+                    if d <= np.add(bd[0],bd[1]):
                         Adj_Matrix[i][j]=1
                         Adj_Matrix[j][i]=1
             pbar.finish()            
@@ -71,4 +73,5 @@ def pdb2con(filename):
     np.save('results/Con_matrix.npy',Connectivity_Matrix)
     Adj_matrix= TemporaryFile()
     np.save('results/Adj_matrix.npy',Adj_Matrix)
+    
     return pdbdata
