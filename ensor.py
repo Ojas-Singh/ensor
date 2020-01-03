@@ -1,15 +1,15 @@
 import sys
 import os
 import glob
-
+import tensorflow as tf
 import networkx as nx
 import numpy as np 
-from lib import fragerrr as fgr
 from lib import fragrr as fg
 from lib import pdb2con as chef
 from lib import plotter as plotter
-from lib import xyzexport as xyz
-
+from lib import xyzexport2 as xyz2
+from lib import overlap as op
+from lib import venn as intsection
 
 print ""
 print "  ______ _   _  _____  ____  _____   "
@@ -21,6 +21,7 @@ print " |______|_| \_|_____/ \____/|_|  \_\ "
 print "                                     "
 print "https://github.com/Ojas-Singh/ensor  "
 
+mammal = tf.Variable("Elephant", tf.string)
 
 
 def main():
@@ -54,12 +55,13 @@ def main():
         Parts=frag[0]
         for i in range (0,len(frag[0])):
             print "Nodes and edges in part",i+1,"is:",fg.nodes_edges(frag[0][i])
-        print "No. of bond broken :",len(frag[1])/2l
-        print "No. of non-bond broken :",len(frag[2])/2
+        # print "No. of bond broken :",len(frag[1])/2
+        # print "No. of non-bond broken :",len(frag[2])/2
         plotter.plot(G,frag,E,N,Coord,filename)
-
-        xyz.export(pdbdata,Mol,Parts)
-
+        
+        final=intsection.func(Parts)
+        xyz2.export(pdbdata,Mol,final)
+       
 
 
 files = glob.glob('results/*')
