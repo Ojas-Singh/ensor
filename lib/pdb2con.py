@@ -18,13 +18,16 @@ def pdb2con(filename):
     with open(filename, 'r') as f:
             lines = f.readlines()
             l=[]
+            i=1
             for line in lines:
                 if line.startswith("ATOM"):
-                    pdbdata[0].append(int(line[4:11]))
+                    # pdbdata[0].append(int(line[4:11]))
+                    pdbdata[0].append(i)
                     pdbdata[1].append(float(line[31:38]))
                     pdbdata[2].append(float(line[39:46]))
                     pdbdata[3].append(float(line[47:54]))
                     pdbdata[4].append(line[77:78])
+                    i+=1
             o = len(pdbdata[0])
             widgets = [Percentage(),' ', Bar(),' ', ETA(),' ', AdaptiveETA()]
             pbar = ProgressBar(widgets=widgets, maxval=o)
@@ -55,9 +58,9 @@ def pdb2con(filename):
                     if bd[0] < d <= bd[1]:
                         # Connectivity_Matrix[i][j]=np.exp(-1*d-bd[1])-1
                         # Connectivity_Matrix[j][i]=np.exp(-1*d-bd[1])-1
-                        w= bd[0]/d
-                        Connectivity_Matrix[i][j]=w**2
-                        Connectivity_Matrix[j][i]=w**2
+                        w= .01
+                        Connectivity_Matrix[i][j]=w
+                        Connectivity_Matrix[j][i]=w
 
                         
                         
