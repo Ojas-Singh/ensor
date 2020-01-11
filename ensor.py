@@ -1,8 +1,7 @@
 import sys
 import os
 import glob
-import tensorflow as tf
-import networkx as nx
+# import networkx as nx
 import numpy as np 
 from lib import fragrr as fg
 from lib import pdb2con as chef
@@ -10,8 +9,10 @@ from lib import plotter as plotter
 from lib import xyzexport2 as xyz2
 from lib import overlap as op
 from lib import venn as intsection
+from lib import Ecal as ec
+from lib import mathfrag as mfg
 
-print ""
+print " "
 print "  ______ _   _  _____  ____  _____   "
 print " |  ____| \ | |/ ____|/ __ \|  __ \  "
 print " | |__  |  \| | (___ | |  | | |__) | "
@@ -21,7 +22,6 @@ print " |______|_| \_|_____/ \____/|_|  \_\ "
 print "                                     "
 print "https://github.com/Ojas-Singh/ensor  "
 
-mammal = tf.Variable("Elephant", tf.string)
 
 
 def main():
@@ -46,22 +46,23 @@ def main():
         x=[]
         
         
-        G=nx.from_numpy_matrix(Mol[0])
-        print "Is_Connected :",nx.is_connected(G)
-        print "Connected Components :",[len(c) for c in sorted(nx.connected_components(G), key=len, reverse=True)]
-        print "Nodes and Edges in graph :",fg.nodes_edges(Mol)
+        # G=nx.from_numpy_matrix(Mol[0])
+        # print "Is_Connected :",nx.is_connected(G)
+        # print "Connected Components :",[len(c) for c in sorted(nx.connected_components(G), key=len, reverse=True)]
+        # print "Nodes and Edges in graph :",fg.nodes_edges(Mol)
         p=int(sys.argv[2])
-        frag=fg.fragmenter(Mol,p)
+        frag=mfg.fragmenter(Mol,p)
         Parts=frag[0]
         for i in range (0,len(frag[0])):
             print "Nodes and edges in part",i+1,"is:",fg.nodes_edges(frag[0][i])
         # print "No. of bond broken :",len(frag[1])/2
         # print "No. of non-bond broken :",len(frag[2])/2
-        plotter.plot(G,frag,E,N,Coord,filename)
+        # plotter.plot(G,frag,E,N,Coord,filename)
         
         final=intsection.func(Parts)
         xyz2.export(pdbdata,Mol,final)
-       
+        nonbonmat=np.load('results/Adj_matrix.npy')
+        ec.func(nonbonmat,final)
 
 
 files = glob.glob('results/*')
