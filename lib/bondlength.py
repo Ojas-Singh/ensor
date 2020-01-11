@@ -6,7 +6,7 @@
 #############################################################################################################################
 
 def search(name):
-    l=[0,2,100]
+    l=[0,3.0,100]
     if name=='CH' or name=='HC':
         l[0]=1.2
     if name=='CC' or name=='CC':
@@ -51,7 +51,10 @@ def search(name):
         l[0]=1.7 
     if name=='PP' or name=='PP':
         l[0]=2
-       
+    if name=='PH' or name=='HP':
+        l[0]=1.5
+    if name=='HH':
+        l[0]=.8
     return l
 
 

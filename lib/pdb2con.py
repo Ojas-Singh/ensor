@@ -47,20 +47,25 @@ def pdb2con(filename):
                     d=((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2)**(0.5)
                     name= str(pdbdata[4][i])+str(pdbdata[4][j])
                     bd= bld.search(name)
-                    if d <= bd[0] and d>=0:
-                        w=-1*d**2*(bd[2]-1)/bd[0]**2 + bd[2]
-                        Connectivity_Matrix[i][j]= w
-                        Connectivity_Matrix[j][i]= w
+                    b1=bd[1]
+                    b0=bd[0]
+                    b2=bd[2]
+                    if b0==0:
+                        print name
+#                     if d <= bd[0] and d>=0:
+#                         w=-1*d**2*(bd[2]-1)/bd[0]**2 + bd[2]
+#                         Connectivity_Matrix[i][j]= w
+#                         Connectivity_Matrix[j][i]= w
 
-#                     if d>bd[1]:
+# #                     if d>bd[1]:
 
                         
-                    if bd[0] < d <= bd[1]:
-                        # Connectivity_Matrix[i][j]=np.exp(-1*d-bd[1])-1
-                        # Connectivity_Matrix[j][i]=np.exp(-1*d-bd[1])-1
-                        w= .01
-                        Connectivity_Matrix[i][j]=w
-                        Connectivity_Matrix[j][i]=w
+#                     if bd[0] < d <= bd[1]:
+#                         # Connectivity_Matrix[i][j]=np.exp(-1*d-bd[1])-1
+#                         # Connectivity_Matrix[j][i]=np.exp(-1*d-bd[1])-1
+#                         w= .01
+#                         Connectivity_Matrix[i][j]=w
+#                         Connectivity_Matrix[j][i]=w
 
                         
                         
@@ -68,7 +73,23 @@ def pdb2con(filename):
                         Connectivity_Matrix[i][j]=0 
                         Connectivity_Matrix[j][i]=0
                         
-                    if d <= np.add(bd[0],bd[1]):
+                    # if d==0:
+                    #     Connectivity_Matrix[i][j]=0 
+                    #     Connectivity_Matrix[j][i]=0
+                    #     InvCon_Matrix[i][j]=0
+                    #     InvCon_Matrix[j][i]=0
+                    # if d<b1:
+                    #     w=1
+                    #     Connectivity_Matrix[i][j]=w
+                    #     Connectivity_Matrix[j][i]=w
+
+
+                    else:
+                        w=b2*np.exp(-np.log(b2)*(d/b0)**2)
+                        Connectivity_Matrix[i][j]=w
+                        Connectivity_Matrix[j][i]=w
+
+                    if b0 <= d <= 3.5:
                         Adj_Matrix[i][j]=1
                         Adj_Matrix[j][i]=1
             pbar.finish()            
