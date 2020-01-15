@@ -37,4 +37,6 @@ To calculate Eigen Values and corresponding Eigen Vector of $$l_(n,n)$$ ,we use 
 ```python
 eigenvalues, eigenvectors = np.linalg.eigh(Laplacian_matrix)
 ```
-
+```math
+l_(n,n)=a+b
+```
