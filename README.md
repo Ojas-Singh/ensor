@@ -37,5 +37,7 @@ To calculate Eigen Values and corresponding Eigen Vector of $$l_(n,n)$$ ,we use 
 ```python
 eigenvalues, eigenvectors = np.linalg.eigh(Laplacian_matrix)
 ```
+
+Partition of 804 atom nanotube using eigen vector corresponding to first, second, third, fourth eigen values.
 ![](https://ojas-singh.github.io/Untitled-2.png )
 
