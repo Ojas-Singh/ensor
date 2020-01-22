@@ -2,6 +2,40 @@
 def name(l):
     res='_'.join(str(x) for x in l)
     return res
+def e(E):
+    if E=='H':
+        return 1
+    if E=='C':
+        return 6
+    if E=='O':
+        return 8
+    if E=='P':
+        return 15
+    if E=='S':
+        return 16
+    if E=='N':
+        return 7
+    if E=='CL':
+        return 17
+    
+    # if E=='':
+    #     return 
+    # if E=='':
+    #     return 
+    # if E=='':
+    #     return 
+    # if E=='':
+    #     return 
+    # if E=='':
+    #     return 
+def multi(pdbdata,frag):
+    s=0
+    for i in frag:
+        s=s+e(pdbdata[4][i-1])
+    if s%2==0:
+        return 1
+    else :
+        return 2
 def export(pdbdata,G,F):
     f= open("input/molecule.com","w+")
     f.write("%chk=molecule.chk"+"\n")
@@ -10,7 +44,7 @@ def export(pdbdata,G,F):
     f.write("\n")
     f.write("The Molecule\n")
     f.write("\n")
-    f.write("0 1\n")
+    f.write("0 "+str(multi(pdbdata,G[1]))+"\n")
     for i in G[1]:
         A=str(pdbdata[4][i-1])
         X='{: f}'.format(pdbdata[1][i-1])
@@ -27,7 +61,7 @@ def export(pdbdata,G,F):
             p.write("\n")
             p.write("Part"+str(F[x][0])+"Frag\n")
             p.write("\n")
-            p.write("0 1\n")
+            p.write("0 "+str(multi(pdbdata,F[x][1]))+"\n")
             
             for i in F[x][1]:
                 A=str(pdbdata[4][i-1])
