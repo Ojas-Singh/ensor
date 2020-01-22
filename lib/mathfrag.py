@@ -14,7 +14,7 @@ def check_symm(matrix):
 
 def cutter(M,x,r):
     eigenvalues, eigenvectors = np.linalg.eigh(Laplacian_matrix(M))
-    index_fnzev = np.argsort(eigenvalues)[2]
+    index_fnzev = np.argsort(eigenvalues)[1]
     fx = eigenvectors[:,index_fnzev] 
     # f = nx.linalg.algebraicconnectivity.fiedler_vector(G,weight='weight', normalized=False, tol=1e-08, method='tracemin_pcg', seed=None)
     partition=np.zeros(len(fx))
@@ -23,13 +23,13 @@ def cutter(M,x,r):
     m1=np.mean([val for val in fx if val>=0])
     m2=np.mean([val for val in fx if val<0])
     e0=0.0
-
+    # print fx
     for i in range(len(fx)):
         if fx[i]<0.0:
             partition[i]=-1
         elif fx[i]>0.0:
             partition[i]=1        
-        for j in range(len(fx)/5):
+        for j in range(5):
             if fx[i]==p1[j]:
                 partition[i]=0
             if fx[i]==-p2[j]:

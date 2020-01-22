@@ -12,7 +12,7 @@ def check_symm(matrix):
                 x=False
     return x
 
-def cutter(M,X,main):
+def cutter(M,X,main,pdbdata):
     x=[]
     eigenvalues, eigenvectors = np.linalg.eigh(Laplacian_matrix(M))
     index_fnzev = np.argsort(eigenvalues)[1]
@@ -35,8 +35,9 @@ def cutter(M,X,main):
         for j in range (0,i):
             if M[0][i][j]!=0 and partition[i]!=partition[j]:
                 x.append([M[1][i],M[1][j]])
-    Na=op.overlap(x,aa,bb,main)[0]
-    Nb=op.overlap(x,aa,bb,main)[1]
+    OO=op.overlap(x,aa,bb,main,pdbdata)
+    Na=OO[0]
+    Nb=OO[1]
     A=np.zeros((len(Na),len(Na)))
     B=np.zeros((len(Nb),len(Nb)))
 
@@ -64,7 +65,7 @@ def nodes_edges(M):
                 edges=edges+1
     return nodes,edges
 
-def fragmenter(M,p):
+def fragmenter(M,p,pdbdata):
     Fragments=[]
     connections=[]
     X=[]
@@ -74,7 +75,7 @@ def fragmenter(M,p):
             # print matrix
             # print "for ",j,"len vlaue",len(matrix)
             m=matrix[j]
-            c=cutter(m,X,M)
+            c=cutter(m,X,M,pdbdata)
             matrix[j]=[]
             matrix[j].append(c[0])
             matrix[j].append(c[1])

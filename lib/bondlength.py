@@ -1,7 +1,7 @@
 #############################################################################################################################
 ##                                               Bond Length Data Average                                                  ##
 ##                                                                                                                         ##
-##   Bondbtwatom =[[single bond lenght, error in it],[double bond lenght, error in it],[Triple bond lenght, error in it]]  ##
+##   Bondbtwatom =[[single bond lenght][will decide later][max Weight]]                                                    ##
 ##                                                                                                                         ##
 #############################################################################################################################
 

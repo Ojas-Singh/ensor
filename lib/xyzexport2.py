@@ -18,7 +18,7 @@ def export(pdbdata,G,F):
             p= open("results/part"+name(F[x][0])+".xyz","w+")
             num=str(len(F[x][1]))
             p.write(num+"\n")
-            p.write("Fragment\n")
+            p.write("Part"+str(F[x][0])+"Frag\n")
             for i in F[x][1]:
                 A=str(pdbdata[4][i-1])
                 X='{: f}'.format(pdbdata[1][i-1])

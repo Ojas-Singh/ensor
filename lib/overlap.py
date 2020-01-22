@@ -31,16 +31,16 @@ def listcorrect(l):
     return x
 def neighbour(atom,Con_matrix):
     l=[]
-    w=.9
+    w=1
     for j in range(len(Con_matrix[atom-1])):
         if Con_matrix[atom-1][j]>=w:
             l.append(j+1)
     return l
 
-def overlap(F,A,B,M):
+def overlap(F,A,B,M,pdbdata):
 
     Con_matrix=M[0]
-    w=.01
+    w=.1
     bonding_broke=[]
     for i in F:
         if Con_matrix[i[0]-1][i[1]-1] >= w:
@@ -53,6 +53,11 @@ def overlap(F,A,B,M):
     Bo=[]
     a=[]
     b=[]
+
+
+
+
+
     for i in x:
         for j in i:
             O.append(j)
@@ -64,6 +69,11 @@ def overlap(F,A,B,M):
                 for e in w:
                     r=neighbour(e,Con_matrix)
                     O=O+r
+                    for k in r:
+                        p=neighbour(k,Con_matrix)
+                        for i in p:
+                            if pdbdata[4][i-1]=='H':
+                                O=O+[i]
     Overlap=unique(O)
     Ao=A+Overlap
     Bo=B+Overlap

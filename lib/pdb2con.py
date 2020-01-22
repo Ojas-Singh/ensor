@@ -33,6 +33,7 @@ def pdb2con(filename):
             pbar = ProgressBar(widgets=widgets, maxval=o)
             Connectivity_Matrix = np.zeros((o,o))
             Adj_Matrix = np.zeros((o,o))
+            mol_Matrix = np.zeros((o,o))
             print "Computing Adjacency Matrix..."
             pbar.start()
             for i in range (0,o):
@@ -52,10 +53,13 @@ def pdb2con(filename):
                     b2=bd[2]
                     if b0==0:
                         print name
-#                     if d <= bd[0] and d>=0:
-#                         w=-1*d**2*(bd[2]-1)/bd[0]**2 + bd[2]
-#                         Connectivity_Matrix[i][j]= w
-#                         Connectivity_Matrix[j][i]= w
+                    if d <= bd[0] and d>=0:
+                        # w=-1*d**2*(bd[2]-1)/bd[0]**2 + bd[2]
+                        mol_Matrix[i][j]= 1
+                        mol_Matrix[j][i]= 1
+                        w=b2**(1-(d/b0)**2)
+                        Connectivity_Matrix[i][j]=w
+                        Connectivity_Matrix[j][i]=w
 
 # #                     if d>bd[1]:
 
@@ -85,11 +89,11 @@ def pdb2con(filename):
 
 
                     else:
-                        w=b2*np.exp(-np.log(b2)*(d/b0)**2)
+                        w=b2**(1-(d/b0)**2)
                         Connectivity_Matrix[i][j]=w
                         Connectivity_Matrix[j][i]=w
 
-                    if b0 <= d <= 3.5:
+                    if b0 <= d <= 4:
                         Adj_Matrix[i][j]=1
                         Adj_Matrix[j][i]=1
             pbar.finish()            
@@ -97,5 +101,7 @@ def pdb2con(filename):
     np.save('results/Con_matrix.npy',Connectivity_Matrix)
     Adj_matrix= TemporaryFile()
     np.save('results/Adj_matrix.npy',Adj_Matrix)
+    mol_matrix= TemporaryFile()
+    np.save('results/mol_matrix.npy',mol_Matrix)
     
     return pdbdata
