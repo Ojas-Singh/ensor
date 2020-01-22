@@ -85,22 +85,23 @@ def main():
         com=glob.glob("input/part*.com")
         for i in com:
             print "Processing :",i
-            subprocess.call(['g09',i,'>&','out1','&'])
+            subprocess.call(['g09',i,'>&','out'])
         # print os.listdir("input/")
 
 
-        out=glob.glob("output/*.log")
+        out=glob.glob("part*.log")
         l=[]
         for i in out:
-            with open(filename, 'r') as f:
-            lines = f.readlines()
-            
-            i=1
-            for line in lines:
-                if line.startswith(" SCF Done:"):
-                    l.append([i,line])
-        print l
-
+            with open(i, 'r') as f:
+                lines = f.readlines()
+                for line in lines:
+                    if line.startswith(" SCF Done:"):
+                        l.append([i,line])
+        for i in l:
+            E=0
+            s=i[1]
+            res = [i for i in s.split()] 
+            print res[4]
 
 
 
