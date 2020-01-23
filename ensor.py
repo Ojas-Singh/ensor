@@ -2,8 +2,8 @@ import sys
 import os
 import glob
 import subprocess
-# import networkx as nx
 import numpy as np 
+import time
 from lib import fragrr as fg
 from lib import pdb2con as chef
 from lib import plotter as plotter
@@ -15,7 +15,6 @@ from lib import Ecal as ec
 from lib import mathfrag as mfg
 from lib import addh as h
 from lib import inputexport as inputexp
-
 print " "
 print "  ______ _   _  _____  ____  _____   "
 print " |  ____| \ | |/ ____|/ __ \|  __ \  "
@@ -38,6 +37,7 @@ def main():
         print "You can manipulate the bond length data under bondlength.py"
         print ""
     else:
+        t0=time.time()
         script = sys.argv[0]
         filename = sys.argv[1]
         pdbdata= chef.pdb2con(filename)
@@ -49,24 +49,11 @@ def main():
         Mol=[Adj_Matrix,N]
         x=[]
         
-        
-        # G=nx.from_numpy_matrix(Mol[0])
-        # print "Is_Connected :",nx.is_connected(G)
-        # print "Connected Components :",[len(c) for c in sorted(nx.connected_components(G), key=len, reverse=True)]
-        # print "Nodes and Edges in graph :",fg.nodes_edges(Mol)
         p=int(sys.argv[2])
         frag=fg.fragmenter(Mol,p,pdbdata)
         Parts=frag[0]
-        # for i in range (0,len(frag[0])):
-        #     print "Nodes and edges in part",i+1,"is:",fg.nodes_edges(frag[0][i])
-        # print "No. of bond broken :",len(frag[1])/2
-        # print "No. of non-bond broken :",len(frag[2])/2
-        # plotter.plot(G,frag,E,N,Coord,filename)
         
         final=intsection.func(Parts)
-        
-        nonbonmat=np.load('results/Adj_matrix.npy')
-        ec.func(nonbonmat,final)
 
 
         s=0
@@ -76,21 +63,32 @@ def main():
                 print "Part :",x[0],"have :", len(x[1])
         print "total frag+overlapfrag :",s
         xyz2.export(pdbdata,Mol,final)
+
         nonbonmat=np.load('results/Adj_matrix.npy')
         ec.func(nonbonmat,final)
+
+
         M=[mol_Matrix,Mol[1]]
         qq=h.addh(pdbdata,final,M,1)
         xyz.export(qq[0],qq[2],qq[1])
         inputexp.export(qq[0],qq[2],qq[1])
+        # inputexp.export(pdbdata,Mol,final)
+
+
         com=glob.glob("input/part*.com")
         for i in com:
+            t1=time.time()
             print "Processing :",i
-            subprocess.call(['g09',i,'>&','out'])
-        # print os.listdir("input/")
+            crname=i.replace('input/','')
+            crname=crname.replace('.com','')
+            subprocess.call(['g09',i,crname,'out'])
+            t2=time.time()
+            print "Done in :",t2-t1
 
 
-        out=glob.glob("part*.log")
+        out=glob.glob('input/part*.log')
         l=[]
+        totE=0
         for i in out:
             with open(i, 'r') as f:
                 lines = f.readlines()
@@ -98,11 +96,20 @@ def main():
                     if line.startswith(" SCF Done:"):
                         l.append([i,line])
         for i in l:
-            E=0
             s=i[1]
+            r=i[0]
+            p=r.count("_")
             res = [i for i in s.split()] 
-            print res[4]
-
+            magE=float(res[4])
+            print p,magE,totE
+            if p%2==0:
+                totE+=magE
+            else:
+                totE-=magE
+        print totE
+        tfinal=time.time()
+        print "Total execution time :",tfinal-t0        
+      
 
 
 files = glob.glob('results/*')
@@ -112,7 +119,9 @@ for f in files:
 files = glob.glob('input/*')
 for f in files:
     os.remove(f)        
-            
+files = glob.glob('*.chk')
+for f in files:
+    os.remove(f)   
 
 
 if __name__ == '__main__':
