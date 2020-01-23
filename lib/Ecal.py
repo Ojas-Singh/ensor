@@ -15,3 +15,4 @@ def func(main,final):
                     else:
                         nE=nE+1
     print "non-bond in Calculated Frags :",nE
+    print "non-bond coverage :",100*(float(nE)/float(E))

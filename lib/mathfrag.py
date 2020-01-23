@@ -29,7 +29,7 @@ def cutter(M,x,r):
             partition[i]=-1
         elif fx[i]>0.0:
             partition[i]=1        
-        for j in range(5):
+        for j in range(len(fx)/10):
             if fx[i]==p1[j]:
                 partition[i]=0
             if fx[i]==-p2[j]:
@@ -100,7 +100,7 @@ def nodes_edges(M):
                 edges=edges+1
     return nodes,edges
 
-def fragmenter(M,p):
+def fragmenter(M,p,pdbdata):
     Fragments=[]
     connections=[]
     x=[]

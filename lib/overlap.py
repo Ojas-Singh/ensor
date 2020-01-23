@@ -74,6 +74,21 @@ def overlap(F,A,B,M,pdbdata):
                         for i in p:
                             if pdbdata[4][i-1]=='H':
                                 O=O+[i]
+    # for i in x:
+    #     for j in i:
+    #         O.append(j)
+    #         n=neighbour(j,Con_matrix)
+    #         O=O+n
+    #         for q in n:
+    #             w=neighbour(q,Con_matrix)
+    #             O=O+w
+    #             for e in w:
+    #                 r=neighbour(e,Con_matrix)
+    #                 O=O+r
+                   
+    #                 for i in r:
+    #                     if pdbdata[4][i-1]=='H':
+    #                         O=O+[i]    
     Overlap=unique(O)
     Ao=A+Overlap
     Bo=B+Overlap

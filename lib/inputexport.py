@@ -55,8 +55,8 @@ def export(pdbdata,G,F):
     for x in range(len(F)):
         if len(F[x][1])!=0:
             p= open("input/part"+name(F[x][0])+".com","w+")
-            p.write("%chk=molecule.chk"+"\n")
-            p.write("%nproc=4\n")
+            p.write("%chk=part"+name(F[x][0])+".chk"+"\n")
+            p.write("%nproc=6\n")
             p.write("# hf/3-21g force \n")
             p.write("\n")
             p.write("Part"+str(F[x][0])+"Frag\n")
@@ -69,5 +69,6 @@ def export(pdbdata,G,F):
                 Y='{: f}'.format(pdbdata[2][i-1])
                 Z='{: f}'.format(pdbdata[3][i-1])
                 p.write("{:9} {:14} {:14} {}\n".format(A,X,Y,Z))
+            p.write("\n")
 
             
