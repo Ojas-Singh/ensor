@@ -15,7 +15,7 @@ def e(E):
         return 16
     if E=='N':
         return 7
-    if E=='CL':
+    if E=='Cl':
         return 17
     
     # if E=='':
