@@ -4,6 +4,8 @@ import glob
 import subprocess
 import numpy as np 
 import time
+import networkx as nx
+from networkx.algorithms.components.connected import connected_components
 from lib import fragrr as fg
 from lib import pdb2con as chef
 from lib import plotter as plotter
@@ -13,6 +15,7 @@ from lib import overlap as op
 from lib import venn as intsection
 from lib import Ecal as ec
 from lib import mathfrag as mfg
+from lib import mathfrag3 as tfg
 from lib import addh as h
 from lib import inputexport as inputexp
 print " "
@@ -49,8 +52,48 @@ def main():
         Mol=[Adj_Matrix,N]
         x=[]
         
+        G=nx.Graph(mol_Matrix)
+        # rings=nx.minimum_cycle_basis(G)
+        rings= list(nx.cycle_basis(G))
+
+        def to_graph(l):
+            G = nx.Graph()
+            for part in l:
+                # each sublist is a bunch of nodes
+                G.add_nodes_from(part)
+                # it also imlies a number of edges:
+                G.add_edges_from(to_edges(part))
+            return G
+
+        def to_edges(l):
+            """ 
+                treat `l` as a Graph and returns it's edges 
+                to_edges(['a','b','c','d']) -> [(a,b), (b,c),(c,d)]
+            """
+            it = iter(l)
+            last = next(it)
+
+            for current in it:
+                yield last, current
+                last = current    
+
+        G = to_graph(rings)
+        connectedrings=list(connected_components(G))
+        
+        # for i in range(len(connectedrings)):
+        #     for j in connectedrings[i]:
+        #         mol_Matrix[j-1][j-1]=i
+        l=[]
+        for i in range(len(connectedrings)):
+            a=[]
+            for j in connectedrings[i]:
+                a.append(j+1)
+            l.append(a)
+
+        
+
         p=int(sys.argv[2])
-        frag=fg.fragmenter(Mol,p,pdbdata)
+        frag=fg.fragmenter(Mol,p,pdbdata,l)
         Parts=frag[0]
         
         final=intsection.func(Parts)
@@ -72,7 +115,7 @@ def main():
         qq=h.addh(pdbdata,final,M,1)
         xyz.export(qq[0],qq[2],qq[1])
         inputexp.export(qq[0],qq[2],qq[1])
-        # inputexp.export(pdbdata,Mol,final)
+        inputexp.export(pdbdata,Mol,final)
 
 
         com=glob.glob("input/part*.com")
