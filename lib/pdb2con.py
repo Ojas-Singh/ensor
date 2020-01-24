@@ -53,7 +53,7 @@ def pdb2con(filename):
                     b2=bd[2]
                     if b0==0:
                         print name
-                    if d <= bd[0] and d>=0:
+                    if d <= bd[0]+.1 and d>=0:
                         # w=-1*d**2*(bd[2]-1)/bd[0]**2 + bd[2]
                         mol_Matrix[i][j]= 1
                         mol_Matrix[j][i]= 1
