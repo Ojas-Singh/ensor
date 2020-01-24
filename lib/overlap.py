@@ -66,15 +66,19 @@ def overlap(F,A,B,M,pdbdata,l):
     for i in x:
         for j in i:
             O.append(j)
-            n=neighbour(j,Con_matrix,1,l)
+            n=neighbour(j,Con_matrix,.9,l)
             O=O+n
+            for qq in n:
+                O.append(j)
+                r=neighbour(qq,Con_matrix,1.1,l)
+                O=O+r
            
-            for k in n:
-                p=neighbour(k,Con_matrix,1,l)
-                
-                for i in p:
-                    if pdbdata[4][i-1]=='H':
-                        O=O+[i]
+                for k in r:
+                    p=neighbour(k,Con_matrix,1,l)
+                    
+                    for i in p:
+                        if pdbdata[4][i-1]=='H':
+                            O=O+[i]
 
 
     # for i in x:
