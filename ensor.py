@@ -15,7 +15,6 @@ from lib import overlap as op
 from lib import venn as intsection
 from lib import Ecal as ec
 from lib import mathfrag as mfg
-from lib import mathfrag3 as tfg
 from lib import addh as h
 from lib import inputexport as inputexp
 print " "
@@ -84,12 +83,18 @@ def main():
         #     for j in connectedrings[i]:
         #         mol_Matrix[j-1][j-1]=i
         l=[]
+        d=[]
+        for i in range(len(mol_Matrix[0])):
+            for j in range(0,i):
+                if mol_Matrix[i][j]==2 or mol_Matrix[j][i]==2:
+                    d.append([i,j])
+        l=l+d
         for i in range(len(connectedrings)):
             a=[]
             for j in connectedrings[i]:
                 a.append(j+1)
             l.append(a)
-
+        
         
 
         p=int(sys.argv[2])
