@@ -14,6 +14,9 @@ Z=[]  # Z Coordiante
 A=[]  # Atom Element
 pdbdata=[N,X,Y,Z,A]
 
+
+
+
 def pdb2con(filename):
     with open(filename, 'r') as f:
             lines = f.readlines()
@@ -51,52 +54,40 @@ def pdb2con(filename):
                     b1=bd[1]
                     b0=bd[0]
                     b2=bd[2]
+
+                    w=b2**(1-(d/b0)**2) #gaussian function
+                    
                     if b0==0:
                         print name
-                    if d <= bd[0]+.1 and d>=0:
-                        # w=-1*d**2*(bd[2]-1)/bd[0]**2 + bd[2]
+                    if d <= b0+.1 and d>=0:
+                        
                         mol_Matrix[i][j]= 1
                         mol_Matrix[j][i]= 1
-                        w=b2**(1-(d/b0)**2)
                         Connectivity_Matrix[i][j]=w
                         Connectivity_Matrix[j][i]=w
 
-# #                     if d>bd[1]:
-
-                        
-#                     if bd[0] < d <= bd[1]:
-#                         # Connectivity_Matrix[i][j]=np.exp(-1*d-bd[1])-1
-#                         # Connectivity_Matrix[j][i]=np.exp(-1*d-bd[1])-1
-#                         w= .01
-#                         Connectivity_Matrix[i][j]=w
-#                         Connectivity_Matrix[j][i]=w
-
+                        if d<=b0-.175:
+                            mol_Matrix[i][j]= 2
+                            mol_Matrix[j][i]= 2
+                            
                         
                         
                     if d==0:
                         Connectivity_Matrix[i][j]=0 
                         Connectivity_Matrix[j][i]=0
-                        
-                    # if d==0:
-                    #     Connectivity_Matrix[i][j]=0 
-                    #     Connectivity_Matrix[j][i]=0
-                    #     InvCon_Matrix[i][j]=0
-                    #     InvCon_Matrix[j][i]=0
-                    # if d<b1:
-                    #     w=1
-                    #     Connectivity_Matrix[i][j]=w
-                    #     Connectivity_Matrix[j][i]=w
+
 
 
                     else:
-                        w=b2**(1-(d/b0)**2)
+                        
                         Connectivity_Matrix[i][j]=w
                         Connectivity_Matrix[j][i]=w
 
                     if b0 <= d <= 4:
                         Adj_Matrix[i][j]=1
                         Adj_Matrix[j][i]=1
-            pbar.finish()            
+            pbar.finish()   
+            print "Total Atom in PDB :",len(pdbdata[0])         
     Con_matrix= TemporaryFile()
     np.save('results/Con_matrix.npy',Connectivity_Matrix)
     Adj_matrix= TemporaryFile()
