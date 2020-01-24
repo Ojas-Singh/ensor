@@ -10,9 +10,9 @@ def search(name):
     if name=='CH' or name=='HC':
         l[0]=1.15
     if name=='CC' or name=='CC':
-        l[0]=1.7
+        l[0]=1.55
     if name=='CN' or name=='NC':
-        l[0]=1.5
+        l[0]=1.49
     if name=='CO' or name=='OC':
         l[0]=1.5
     if name=='CS' or name=='SC':
