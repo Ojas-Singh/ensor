@@ -26,7 +26,7 @@ def pdb2con(filename):
                     pdbdata[1].append(float(line[31:38]))
                     pdbdata[2].append(float(line[39:46]))
                     pdbdata[3].append(float(line[47:54]))
-                    pdbdata[4].append(line[77:78])
+                    pdbdata[4].append((line[76:78]).strip(" "))
                     i+=1
             o = len(pdbdata[0])
             widgets = [Percentage(),' ', Bar(),' ', ETA(),' ', AdaptiveETA()]
