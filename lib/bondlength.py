@@ -6,13 +6,13 @@
 #############################################################################################################################
 
 def search(name):
-    l=[0,3.0,5]
+    l=[1.2,3.0,5]
     if name=='CH' or name=='HC':
         l[0]=1.15
     if name=='CC' or name=='CC':
-        l[0]=1.55
+        l[0]=1.7
     if name=='CN' or name=='NC':
-        l[0]=1.49
+        l[0]=1.5
     if name=='CO' or name=='OC':
         l[0]=1.5
     if name=='CS' or name=='SC':
@@ -55,6 +55,16 @@ def search(name):
         l[0]=1.5
     if name=='HH':
         l[0]=.8
+    if name=='ClC' or name=='CCl':
+        l[0]=1.8
+    if name=='ClH' or name=='HCl':
+        l[0]=1.28
+    if name=='ClO' or name=='OCl':
+        l[0]=1
+    if name=='ClN' or name=='NCl':
+        l[0]=1.5
+    if name=='ClP' or name=='PCl':
+        l[0]=1.5
     return l
 
 
