@@ -2,7 +2,7 @@
 ##                                               Bond Length Data Average                                                  ##
 ##                                                                                                                         ##
 ##   Bondbtwatom =[[single bond lenght][will decide later][max Weight]]                                                    ##
-##                                                                                                                         ##
+##                              http://www.wiredchemist.com/chemistry/data/bond_energies_lengths.html                                                                                           ##
 #############################################################################################################################
 
 def search(name):
