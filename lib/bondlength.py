@@ -14,7 +14,7 @@ def search(name):
     if name=='CN' or name=='NC':
         l[0]=1.47
     if name=='CO' or name=='OC':
-        l[0]=1.5
+        l[0]=1.48
     if name=='CS' or name=='SC':
         l[0]=1.8  
     if name=='NO' or name=='ON':
@@ -42,7 +42,7 @@ def search(name):
     if name=='SO' or name=='OS':
         l[0]=1.5
     if name=='HO' or name=='OH':
-        l[0]=1.2
+        l[0]=1.1
     if name=='PO' or name=='OP':
         l[0]=1.65 
     if name=='CP' or name=='PC':
