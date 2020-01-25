@@ -1,3 +1,5 @@
+import copy 
+from copy import deepcopy
 import numpy as np
 def bonding_list(F,Con_matrix):
     w=1
@@ -34,8 +36,10 @@ def neighbour(atom,Con_matrix,w,l):
     for j in range(len(Con_matrix[atom-1])):
         if Con_matrix[atom-1][j]>=w:
             ll.append(j+1)
-    for i in ll:
+    l2=deepcopy(ll)
+    for i in l2:
         ll=ll+addring(i,l)
+
     return ll
 
 def addring(n,l):
@@ -57,7 +61,6 @@ def overlap(F,A,B,M,pdbdata,l):
 
 
     x=listcorrect(bonding_broke)
-    print x
     O=[]
     Ao=[]
     Bo=[]
@@ -69,6 +72,12 @@ def overlap(F,A,B,M,pdbdata,l):
             O.append(j)
             n=neighbour(j,Con_matrix,.9,l)
             O=O+n
+            for t in n:
+                    p=neighbour(t,Con_matrix,1,l)
+                    
+                    for i in p:
+                        if pdbdata[4][i-1]=='H':
+                            O=O+[i]
             for qq in n:
                 O.append(j)
                 r=neighbour(qq,Con_matrix,1.3,l)
