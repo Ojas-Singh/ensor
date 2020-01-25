@@ -42,7 +42,7 @@ def addring(n,l):
     a=[]
     for i in l:
         if n in i:
-            a=list(i)
+            a=a+list(i)
     return a
             
 
@@ -57,6 +57,7 @@ def overlap(F,A,B,M,pdbdata,l):
 
 
     x=listcorrect(bonding_broke)
+    print x
     O=[]
     Ao=[]
     Bo=[]
@@ -70,7 +71,7 @@ def overlap(F,A,B,M,pdbdata,l):
             O=O+n
             for qq in n:
                 O.append(j)
-                r=neighbour(qq,Con_matrix,1.1,l)
+                r=neighbour(qq,Con_matrix,1.3,l)
                 O=O+r
            
                 for k in r:
