@@ -79,40 +79,40 @@ def main():
         inputexp.export(pdbdata,Mol,final)
 
 
-        # com=glob.glob("input/part*.com")
-        # for i in com:
-        #     t1=time.time()
-        #     print "Processing :",i
-        #     crname=i.replace('input/','')
-        #     crname=crname.replace('.com','')
-        #     subprocess.call(['g09',i,crname,'out'])
-        #     t2=time.time()
-        #     print "Done in :",t2-t1
+        com=glob.glob("input/part*.com")
+        for i in com:
+            t1=time.time()
+            print "Processing :",i
+            crname=i.replace('input/','')
+            crname=crname.replace('.com','')
+            subprocess.call(['g09',i,crname,'out'])
+            t2=time.time()
+            print "Done in :",t2-t1
 
 
-        # out=glob.glob('input/part*.log')
-        # l=[]
-        # totE=0
-        # for i in out:
-        #     with open(i, 'r') as f:
-        #         lines = f.readlines()
-        #         for line in lines:
-        #             if line.startswith(" SCF Done:"):
-        #                 l.append([i,line])
-        # for i in l:
-        #     s=i[1]
-        #     r=i[0]
-        #     p=r.count("_")
-        #     res = [i for i in s.split()] 
-        #     magE=float(res[4])
-        #     print p,magE,totE
-        #     if p%2==0:
-        #         totE+=magE
-        #     else:
-        #         totE-=magE
-        # print totE
-        # tfinal=time.time()
-        # print "Total execution time :",tfinal-t0        
+        out=glob.glob('input/part*.log')
+        l=[]
+        totE=0
+        for i in out:
+            with open(i, 'r') as f:
+                lines = f.readlines()
+                for line in lines:
+                    if line.startswith(" SCF Done:"):
+                        l.append([i,line])
+        for i in l:
+            s=i[1]
+            r=i[0]
+            p=r.count("_")
+            res = [i for i in s.split()] 
+            magE=float(res[4])
+            print p,magE,totE
+            if p%2==0:
+                totE+=magE
+            else:
+                totE-=magE
+        print totE
+        tfinal=time.time()
+        print "Total execution time :",tfinal-t0        
       
 
 
