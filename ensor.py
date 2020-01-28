@@ -13,6 +13,7 @@ from lib import overlap as op
 from lib import venn as intsection
 from lib import Ecal as ec
 from lib import mathfrag as mfg
+from lib import mathfrag3 as tfg
 from lib import addh as h
 from lib import inputexport as inputexp
 from lib import congugate 
@@ -49,12 +50,10 @@ def main():
         mol_Matrix=np.load('results/mol_matrix.npy')
         Mol=[Adj_Matrix,N]
         x=[]
-        
         l=list(congugate.system(mol_Matrix))
 
-
         p=int(sys.argv[2])
-        frag=fg.fragmenter(Mol,p,pdbdata,l)
+        frag=fg.fragmenter(Mol,p,pdbdata,l,mol_Matrix)
         Parts=frag[0]
         
         final=intsection.func(Parts)
@@ -66,12 +65,11 @@ def main():
                 s=s+1
                 print "Part :",x[0],"have :", len(x[1])
         print "total frag+overlapfrag :",s
-        xyz2.export(pdbdata,Mol,final)
+        
 
         nonbonmat=np.load('results/Adj_matrix.npy')
         ec.func(nonbonmat,final)
-
-
+        xyz2.export(pdbdata,Mol,final)
         M=[mol_Matrix,Mol[1]]
         qq=h.addh(pdbdata,final,M,1)
         xyz.export(qq[0],qq[2],qq[1])
