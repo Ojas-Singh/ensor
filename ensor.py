@@ -47,9 +47,11 @@ def main():
         Coord=[pdbdata[1],pdbdata[2],pdbdata[3]]
         Adj_Matrix=np.load('results/Con_matrix.npy')
         mol_Matrix=np.load('results/mol_matrix.npy')
+        Dmol_Matrix=np.load('results/Dmol_matrix.npy')
         Mol=[Adj_Matrix,N]
+        Mol2=[mol_Matrix,N]
         x=[]
-        l=list(congugate.system(mol_Matrix))
+        l=list(congugate.system(mol_Matrix,Dmol_Matrix))
 
         p=int(sys.argv[2])
         frag=fg.fragmenter(Mol,p,pdbdata,l,mol_Matrix)
