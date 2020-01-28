@@ -53,7 +53,7 @@ def addring(n,l):
 def overlap(F,A,B,M,pdbdata,l,mol_Matrix):
 
     Con_matrix=M[0]
-    w=.01
+    w=.1
     bonding_broke=[]
 
     for i in F:
@@ -76,16 +76,16 @@ def overlap(F,A,B,M,pdbdata,l,mol_Matrix):
             for t in n:
                     p=neighbour(t,mol_Matrix,1,l)
                     O=O+p
-                    for i in p:
-                        if pdbdata[4][i-1]=='H' or pdbdata[4][i-1]=='O' or pdbdata[4][i-1]=='Cl':
-                            O=O+[i]
-                            qqqq=neighbour(i,mol_Matrix,1,l)
+                    # for i in p:
+                    #     if pdbdata[4][i-1]=='H' or pdbdata[4][i-1]=='Cl'or pdbdata[4][i-1]=='O':
+                    #         O=O+[i]
+                            # qqqq=neighbour(i,mol_Matrix,1,l)
                     
-                            for i in qqqq:
-                                if pdbdata[4][i-1]=='H':
+                            # for i in qqqq:
+                            #     if pdbdata[4][i-1]=='H':
                     
-                                    O=O+[i]
-                    
+                            #         O=O+[i]
+                
             # for qq in n:
             #     O.append(j)
             #     r=neighbour(qq,Con_matrix,1.2,l)

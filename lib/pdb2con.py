@@ -37,6 +37,7 @@ def pdb2con(filename):
             Connectivity_Matrix = np.zeros((o,o))
             Adj_Matrix = np.zeros((o,o))
             mol_Matrix = np.zeros((o,o))
+            Dmol_Matrix = np.zeros((o,o))
             print "Computing Adjacency Matrix..."
             pbar.start()
             for i in range (0,o):
@@ -59,16 +60,18 @@ def pdb2con(filename):
                     
                     if b0==0:
                         print name
-                    if d <= b0+.02 and d>=0:
+                    if d <= b0+.1 :
                         
                         mol_Matrix[i][j]= 1
                         mol_Matrix[j][i]= 1
                         Connectivity_Matrix[i][j]=w
                         Connectivity_Matrix[j][i]=w
 
-                        if d<=b0-.01:
+                        if d<=b0-.1:
                             mol_Matrix[i][j]= 2
                             mol_Matrix[j][i]= 2
+                            Dmol_Matrix[i][j]= 2
+                            Dmol_Matrix[j][i]= 2
                             
                         
                         
@@ -94,5 +97,7 @@ def pdb2con(filename):
     np.save('results/Adj_matrix.npy',Adj_Matrix)
     mol_matrix= TemporaryFile()
     np.save('results/mol_matrix.npy',mol_Matrix)
+    Dmol_matrix= TemporaryFile()
+    np.save('results/Dmol_matrix.npy',Dmol_Matrix)
     
     return pdbdata

@@ -22,15 +22,17 @@ def to_edges(l):
         yield last, current
         last = current    
 
-def system(mol_Matrix):
+def system(mol_Matrix,Dmol_Matrix):
     G=networkx.Graph(mol_Matrix)
-    ringl= list(networkx.cycle_basis(G))
+    D=networkx.Graph(Dmol_Matrix)
+    ringl= list(networkx.cycle_basis(D))
+    print ringl
     rings=[]
     for i in ringl:
         if len(i) < 9:
             rings.append(i)
-            # for j in i:
-            #     rings.append(list(G.neighbors(j))+[j])
+            for j in i:
+                rings.append(list(G.neighbors(j))+[j])
     
     d=[]
     l=[]

@@ -17,6 +17,7 @@ def cutter(M,X,main,pdbdata,l,mol_Matrix):
     eigenvalues, eigenvectors = np.linalg.eigh(Laplacian_matrix(M))
     index_fnzev = np.argsort(eigenvalues)[1]
     fx = eigenvectors[:,index_fnzev] 
+    gx=eigenvectors[index_fnzev] 
     # f = nx.linalg.algebraicconnectivity.fiedler_vector(G,weight='weight', normalized=False, tol=1e-08, method='tracemin_pcg', seed=None)
     partition = [val >= 0 for val in fx]
     a=[]

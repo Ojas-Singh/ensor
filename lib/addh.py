@@ -2,16 +2,16 @@ import copy
 from copy import deepcopy
 
 def addhvector(Vf,Vm):
-    h=1.09
+    h=1.05
     
     d=((Vm[0]-Vf[0])**2 + (Vm[1]-Vf[1])**2 + (Vm[2]-Vf[2])**2)**(0.5)
     if d>0:
-        x=h*(Vm[0]-Vf[0])/d
-        y=h*(Vm[1]-Vf[1])/d
-        z=h*(Vm[2]-Vf[2])/d
-        # x=Vm[0]
-        # y=Vm[1]
-        # z=Vm[2]
+        # x=h*(Vm[0]-Vf[0])/d
+        # y=h*(Vm[1]-Vf[1])/d
+        # z=h*(Vm[2]-Vf[2])/d
+        x=Vm[0]
+        y=Vm[1]
+        z=Vm[2]
 
     
         return x,y,z
@@ -41,12 +41,12 @@ def addh(pdbdata,final,Mol,w):
                             
                             if h not in hlist:
                                 N.append(int(num))
-                                X.append(v1[0]+h[0])
-                                Y.append(v1[1]+h[1])
-                                Z.append(v1[2]+h[2])
-                                # X.append(h[0])
-                                # Y.append(h[1])
-                                # Z.append(h[2])
+                                # X.append(v1[0]+h[0])
+                                # Y.append(v1[1]+h[1])
+                                # Z.append(v1[2]+h[2])
+                                X.append(h[0])
+                                Y.append(h[1])
+                                Z.append(h[2])
                                 E.append('H')
                                 new_final[x][1].append(num+1)
                                 hlist.append(h)
