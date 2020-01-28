@@ -1,5 +1,5 @@
 import numpy as np 
-
+from lib import overlap
 def Laplacian_matrix(M):
     Degree_Matrix =  np.diag(np.ravel(np.sum(M[0],axis=1))) 
     laplacian_matrix = Degree_Matrix - M[0]
@@ -12,7 +12,7 @@ def check_symm(matrix):
                 x=False
     return x
 
-def cutter(M,x,r):
+def cutter(M,x,r,l):
     eigenvalues, eigenvectors = np.linalg.eigh(Laplacian_matrix(M))
     index_fnzev = np.argsort(eigenvalues)[1]
     fx = eigenvectors[:,index_fnzev] 
@@ -29,7 +29,7 @@ def cutter(M,x,r):
             partition[i]=-1
         elif fx[i]>0.0:
             partition[i]=1        
-        for j in range(len(fx)/10):
+        for j in range(20):
             if fx[i]==p1[j]:
                 partition[i]=0
             if fx[i]==-p2[j]:
@@ -42,6 +42,7 @@ def cutter(M,x,r):
     Na=[]
     Nb=[]
     Nc=[]
+    O=[]
     for i in range (0,len(partition)):
         if partition[i]==1:
             a.append(i)
@@ -49,6 +50,10 @@ def cutter(M,x,r):
             b.append(i)
         elif partition[i]==0:
             c.append(i)
+    # for j in c:
+    #     O=O+[j]
+    #     n=overlap.neighbour(j,M,1,l)
+    #     O=O+n
     a=a+c
     b=b+c
     A=np.zeros((len(a),len(a)))
@@ -100,7 +105,7 @@ def nodes_edges(M):
                 edges=edges+1
     return nodes,edges
 
-def fragmenter(M,p,pdbdata):
+def fragmenter(M,p,pdbdata,l):
     Fragments=[]
     connections=[]
     x=[]
@@ -111,7 +116,7 @@ def fragmenter(M,p,pdbdata):
             # print matrix
             # print "for ",j,"len vlaue",len(matrix)
             m=matrix[j]
-            c=cutter(m,x,r)
+            c=cutter(m,x,r,l)
             matrix[j]=[]
             matrix[j].append(c[0])
             matrix[j].append(c[1])

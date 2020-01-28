@@ -50,11 +50,12 @@ def addring(n,l):
     return a
             
 
-def overlap(F,A,B,M,pdbdata,l):
+def overlap(F,A,B,M,pdbdata,l,mol_Matrix):
 
     Con_matrix=M[0]
-    w=.1
+    w=.01
     bonding_broke=[]
+
     for i in F:
         if Con_matrix[i[0]-1][i[1]-1] >= w:
             bonding_broke.append(i)
@@ -69,26 +70,38 @@ def overlap(F,A,B,M,pdbdata,l):
 
     for i in x:
         for j in i:
-            O.append(j)
-            n=neighbour(j,Con_matrix,.9,l)
+            O=O+[j]
+            n=neighbour(j,mol_Matrix,1,l)
             O=O+n
             for t in n:
-                    p=neighbour(t,Con_matrix,1,l)
-                    
+                    p=neighbour(t,mol_Matrix,1,l)
+                    O=O+p
                     for i in p:
-                        if pdbdata[4][i-1]=='H':
+                        if pdbdata[4][i-1]=='H' or pdbdata[4][i-1]=='O' or pdbdata[4][i-1]=='Cl':
                             O=O+[i]
-            for qq in n:
-                O.append(j)
-                r=neighbour(qq,Con_matrix,1.3,l)
-                O=O+r
+                            qqqq=neighbour(i,mol_Matrix,1,l)
+                    
+                            for i in qqqq:
+                                if pdbdata[4][i-1]=='H':
+                    
+                                    O=O+[i]
+                    
+            # for qq in n:
+            #     O.append(j)
+            #     r=neighbour(qq,Con_matrix,1.2,l)
+            #     O=O+r
            
-                for k in r:
-                    p=neighbour(k,Con_matrix,1,l)
+            #     for k in r:
+            #         p=neighbour(k,Con_matrix,1,l)
                     
-                    for i in p:
-                        if pdbdata[4][i-1]=='H':
-                            O=O+[i]
+            #         for i in p:
+            #             if pdbdata[4][i-1]=='H' or pdbdata[4][i-1]=='Cl'or pdbdata[4][i-1]=='O':
+            #                 O=O+[i]
+            #                 qqqq=neighbour(i,Con_matrix,1,l)
+                    
+            #                 for i in qqqq:
+            #                     if pdbdata[4][i-1]=='H':
+            #                         O=O+[i]
 
 
     # for i in x:

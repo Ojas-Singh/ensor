@@ -60,7 +60,3 @@ def search(name):
     if name=='ClP' or name=='PCl':
         l[0]=2.03
     return l
-
-
-
-

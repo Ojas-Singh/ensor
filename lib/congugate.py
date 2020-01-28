@@ -24,7 +24,14 @@ def to_edges(l):
 
 def system(mol_Matrix):
     G=networkx.Graph(mol_Matrix)
-    rings= list(networkx.cycle_basis(G))
+    ringl= list(networkx.cycle_basis(G))
+    rings=[]
+    for i in ringl:
+        if len(i) < 9:
+            rings.append(i)
+            # for j in i:
+            #     rings.append(list(G.neighbors(j))+[j])
+    
     d=[]
     l=[]
     for i in range(len(mol_Matrix[0])):

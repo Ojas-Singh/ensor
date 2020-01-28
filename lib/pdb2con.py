@@ -59,14 +59,14 @@ def pdb2con(filename):
                     
                     if b0==0:
                         print name
-                    if d <= b0+.1 and d>=0:
+                    if d <= b0+.02 and d>=0:
                         
                         mol_Matrix[i][j]= 1
                         mol_Matrix[j][i]= 1
                         Connectivity_Matrix[i][j]=w
                         Connectivity_Matrix[j][i]=w
 
-                        if d<=b0-.175:
+                        if d<=b0-.01:
                             mol_Matrix[i][j]= 2
                             mol_Matrix[j][i]= 2
                             
