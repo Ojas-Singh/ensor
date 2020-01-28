@@ -13,7 +13,6 @@ from lib import overlap as op
 from lib import venn as intsection
 from lib import Ecal as ec
 from lib import mathfrag as mfg
-from lib import mathfrag3 as tfg
 from lib import addh as h
 from lib import inputexport as inputexp
 from lib import congugate 
