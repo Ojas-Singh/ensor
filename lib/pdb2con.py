@@ -55,11 +55,11 @@ def pdb2con(filename):
                     b1=bd[1]
                     b0=bd[0]
                     b2=bd[2]
-
-                    w=b2**(1-(d/b0)**2) #gaussian function
-                    
                     if b0==0:
                         print name
+                    w=b2**(1-(d/b0)**2) #gaussian function
+                    
+                    
                     if d <= b0+.1 :
                         
                         mol_Matrix[i][j]= 1

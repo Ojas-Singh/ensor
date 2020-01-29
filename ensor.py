@@ -29,32 +29,47 @@ print "https://github.com/Ojas-Singh/ensor  "
 
 
 def main():
+    p=0
+    calc=False
+    ring=True
+    overw=1
+    for i in range(len(sys.argv)):
+        if sys.argv[i]=='-p':
+            p=int(sys.argv[i+1])
+        if sys.argv[i]=='-g09':
+            calc=True
+        if sys.argv[i]=='-raw':
+            ring=False
+        if sys.argv[i]=='-overlap':
+            overw=float(sys.argv[i+1])
     if len(sys.argv) == 1:
         print "use -help to explore options"
-    elif sys.argv[1] == '-help':
+    elif sys.argv[1] == '-help' or sys.argv[1]=='-h':
         print "Options For ENSOR:"
-        print "usage: ensor.py <PDB Filename> <Fragments> <graph> "
-        print "e.g : ensor.py PDB/mol.pdb 12 True"
+        print "usage: ensor.py PATH-TO-FILE -option1 -option2 ... "
+        print "e.g : ensor.py PDB/mol.pdb -p 2 -g09"
         print "You can manipulate the bond length data under bondlength.py"
         print ""
     else:
+
+
+
         t0=time.time()
         script = sys.argv[0]
         filename = sys.argv[1]
         pdbdata= chef.pdb2con(filename)
-        N=pdbdata[0]
-        E=pdbdata[4]
-        Coord=[pdbdata[1],pdbdata[2],pdbdata[3]]
+        ##########_ Matrices #########################
         Adj_Matrix=np.load('results/Con_matrix.npy')
         mol_Matrix=np.load('results/mol_matrix.npy')
         Dmol_Matrix=np.load('results/Dmol_matrix.npy')
-        Mol=[Adj_Matrix,N]
-        Mol2=[mol_Matrix,N]
-        x=[]
-        l=list(congugate.system(mol_Matrix,Dmol_Matrix))
+        nonbonmat=np.load('results/Adj_matrix.npy')
+        ##############################################
+        Mol=[Adj_Matrix,pdbdata[0]]
+        if ring:
+            l=list(congugate.system(mol_Matrix,Dmol_Matrix))
 
-        p=int(sys.argv[2])
-        frag=fg.fragmenter(Mol,p,pdbdata,l,mol_Matrix)
+        
+        frag=fg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw)
         Parts=frag[0]
         
         final=intsection.func(Parts)
@@ -68,7 +83,7 @@ def main():
         print "total frag+overlapfrag :",s
         
 
-        nonbonmat=np.load('results/Adj_matrix.npy')
+        
         ec.func(nonbonmat,final)
         xyz2.export(pdbdata,Mol,final)
         M=[mol_Matrix,Mol[1]]
@@ -77,42 +92,42 @@ def main():
         inputexp.export(qq[0],qq[2],qq[1])
         inputexp.export(pdbdata,Mol,final)
 
+        if calc:
+            com=glob.glob("input/part*.com")
+            for i in com:
+                t1=time.time()
+                print "Processing :",i
+                crname=i.replace('input/','')
+                crname=crname.replace('.com','')
+                subprocess.call(['g09',i,crname,'out'])
+                t2=time.time()
+                print "Done in :",t2-t1
 
-        com=glob.glob("input/part*.com")
-        for i in com:
-            t1=time.time()
-            print "Processing :",i
-            crname=i.replace('input/','')
-            crname=crname.replace('.com','')
-            subprocess.call(['g09',i,crname,'out'])
-            t2=time.time()
-            print "Done in :",t2-t1
 
-
-        out=glob.glob('input/part*.log')
-        l=[]
-        totE=0
-        for i in out:
-            with open(i, 'r') as f:
-                lines = f.readlines()
-                for line in lines:
-                    if line.startswith(" SCF Done:"):
-                        l.append([i,line])
-        for i in l:
-            s=i[1]
-            r=i[0]
-            p=r.count("_")
-            res = [i for i in s.split()] 
-            magE=float(res[4])
-            print p,magE,totE
-            if p%2==0:
-                totE+=magE
-            else:
-                totE-=magE
-        print totE
-        tfinal=time.time()
-        print "Total execution time :",tfinal-t0        
-      
+            out=glob.glob('input/part*.log')
+            l=[]
+            totE=0
+            for i in out:
+                with open(i, 'r') as f:
+                    lines = f.readlines()
+                    for line in lines:
+                        if line.startswith(" SCF Done:"):
+                            l.append([i,line])
+            for i in l:
+                s=i[1]
+                r=i[0]
+                p=r.count("_")
+                res = [i for i in s.split()] 
+                magE=float(res[4])
+                print p,magE,totE
+                if p%2==0:
+                    totE+=magE
+                else:
+                    totE-=magE
+            print totE
+            tfinal=time.time()
+            print "Total execution time :",tfinal-t0        
+        
 
 
 files = glob.glob('results/*')
@@ -125,6 +140,9 @@ for f in files:
 files = glob.glob('*.chk')
 for f in files:
     os.remove(f)   
+files = glob.glob('lib/*.pyc')
+for f in files:
+    os.remove(f) 
 
 
 if __name__ == '__main__':

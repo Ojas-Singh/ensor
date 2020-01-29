@@ -50,10 +50,9 @@ def addring(n,l):
     return a
             
 
-def overlap(F,A,B,M,pdbdata,l,mol_Matrix):
+def overlap(F,A,B,M,pdbdata,l,mol_Matrix,w):
 
     Con_matrix=M[0]
-    w=.1
     bonding_broke=[]
 
     for i in F:
@@ -74,16 +73,18 @@ def overlap(F,A,B,M,pdbdata,l,mol_Matrix):
             n=neighbour(j,mol_Matrix,1,l)
             O=O+n
             for t in n:
-                    p=neighbour(t,mol_Matrix,1,l)
-                    O=O+p
-                    # for i in p:
-                    #     if pdbdata[4][i-1]=='H' or pdbdata[4][i-1]=='Cl'or pdbdata[4][i-1]=='O':
-                    #         O=O+[i]
+                    ad=False
+                    tt=[]
+                    p=neighbour(t,mol_Matrix,1,tt)
+                    for i in p:
+                        if pdbdata[4][i-1]=='H' or pdbdata[4][i-1]=='Cl'or pdbdata[4][i-1]=='O':
+                            O=O+[i]
                             # qqqq=neighbour(i,mol_Matrix,1,l)
                     
-                            # for i in qqqq:
+                            # for k in qqqq:
                             #     if pdbdata[4][i-1]=='H':
-                    
+                            #         ad=True
+                            #         O=O+[k]
                             #         O=O+[i]
                 
             # for qq in n:
@@ -103,48 +104,7 @@ def overlap(F,A,B,M,pdbdata,l,mol_Matrix):
             #                     if pdbdata[4][i-1]=='H':
             #                         O=O+[i]
 
-
-    # for i in x:
-    #     for j in i:
-    #         O.append(j)
-    #         n=neighbour(j,Con_matrix,1)
-    #         O=O+n
-    #         for q in n:
-    #             w=neighbour(q,Con_matrix,1)
-    #             O=O+w
-    #             for i in w:
-    #                 if pdbdata[4][i-1]=='H':
-    #                     O=O+[i]
-    #             for e in w:
-    #                 r=neighbour(e,Con_matrix,1.2)
-    #                 O=O+r
-    #                 for i in r:
-    #                     if pdbdata[4][i-1]=='H':
-    #                         O=O+[i]
-    #                 for k in r:
-    #                     p=neighbour(k,Con_matrix,1)
-                        
-    #                     for i in p:
-    #                         if pdbdata[4][i-1]=='H':
-    #                             O=O+[i]
-    # for i in x:
-    #     for j in i:
-    #         O.append(j)
-    #         n=neighbour(j,Con_matrix,1)
-    #         O=O+n
-    #         for q in n:
-    #             w=neighbour(q,Con_matrix,1.5)
-    #             ww=neighbour(q,Con_matrix,1)
-    #             O=O+w
-    #             for i in ww:
-    #                     if pdbdata[4][i-1]=='H':
-    #                         O=O+[i]    
-    #             for e in w:
-    #                 r=neighbour(e,Con_matrix,1)
-                   
-    #                 for i in r:
-    #                     if pdbdata[4][i-1]=='H':
-    #                         O=O+[i]    
+ 
     Overlap=unique(O)
     Ao=A+Overlap
     Bo=B+Overlap
