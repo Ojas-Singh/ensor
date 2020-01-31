@@ -96,10 +96,8 @@ def main():
 
         if calc:
             com=glob.glob("input/part*.com")
-            config_handler.set_global(spinner='dots_waves2')
-            with alive_bar(bar='dots_waves') as bar:
+            with alive_bar(len(com),bar='smooth',spinner='dots_waves2') as bar:
                 for i in com:
-                    bar()
                     t1=time.time()
                     print colored("Processing :", 'blue'),colored(i, 'cyan')
                     crname=i.replace('input/','')
@@ -107,6 +105,7 @@ def main():
                     subprocess.call(['g09',i,crname,'out'])
                     t2=time.time()
                     print colored("Done in :", 'green'),t2-t1,"seconds"
+                    bar()
 
 
             out=glob.glob('input/part*.log')
