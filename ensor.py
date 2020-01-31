@@ -5,6 +5,7 @@ import subprocess
 import numpy as np 
 import time
 from termcolor import colored
+from alive_progress import alive_bar
 from lib import fragrr as fg
 from lib import pdb2con as chef
 from lib import plotter as plotter
@@ -95,14 +96,17 @@ def main():
 
         if calc:
             com=glob.glob("input/part*.com")
-            for i in com:
-                t1=time.time()
-                print colored("Processing :", 'blue'),colored(i, 'cyan')
-                crname=i.replace('input/','')
-                crname=crname.replace('.com','')
-                subprocess.call(['g09',i,crname,'out'])
-                t2=time.time()
-                print colored("Done in :", 'green'),t2-t1
+            config_handler.set_global(spinner='dots_waves2')
+            with alive_bar(bar='dots_waves') as bar:
+                for i in com:
+                    bar()
+                    t1=time.time()
+                    print colored("Processing :", 'blue'),colored(i, 'cyan')
+                    crname=i.replace('input/','')
+                    crname=crname.replace('.com','')
+                    subprocess.call(['g09',i,crname,'out'])
+                    t2=time.time()
+                    print colored("Done in :", 'green'),t2-t1,"seconds"
 
 
             out=glob.glob('input/part*.log')
