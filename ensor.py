@@ -136,7 +136,7 @@ def main():
             print colored(totE, 'red')
             tfinal=time.time()
             print colored("Total execution time :", 'blue'),colored(tfinal-t0, 'green')      
-        rname=filename.strip(".pdb")+"_p_"+str(p)+str(datetime.datetime.now())  
+        rname=filename.strip(".pdb")+"_p_"+str(p)+str(datetime.datetime.now())+'.dat'
         
         r = open("data/"+rname, "a")
         r.write("file to store data for ML")
