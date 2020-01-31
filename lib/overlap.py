@@ -1,6 +1,7 @@
 import copy 
 from copy import deepcopy
 import numpy as np
+import networkx 
 def bonding_list(F,Con_matrix):
     w=1
     bonding_broke=[]
@@ -31,10 +32,12 @@ def listcorrect(l):
         if i[0]>i[1]:
             x.append(i)
     return x
-def neighbour(atom,Con_matrix,w,l):
+def neighbour(atom,matrix,w,l):
     ll=[]
-    for j in range(len(Con_matrix[atom-1])):
-        if Con_matrix[atom-1][j]>=w:
+    # G=networkx.Graph(matrix)
+    # ll=list(G.neighbors(atom-1))
+    for j in range(len(matrix[atom-1])):   #need update using networkx
+        if matrix[atom-1][j]>=w:
             ll.append(j+1)
     l2=deepcopy(ll)
     for i in l2:
@@ -66,19 +69,25 @@ def overlap(F,A,B,M,pdbdata,l,mol_Matrix,w):
     Bo=[]
     a=[]
     b=[]
-
     for i in x:
         for j in i:
             O=O+[j]
             n=neighbour(j,mol_Matrix,1,l)
             O=O+n
             for t in n:
-                    ad=False
                     tt=[]
                     p=neighbour(t,mol_Matrix,1,tt)
                     for i in p:
-                        if pdbdata[4][i-1]=='H' or pdbdata[4][i-1]=='Cl'or pdbdata[4][i-1]=='O':
+                        
+                            
+                        if pdbdata[4][i-1]=='H' or pdbdata[4][i-1]=='Cl':
                             O=O+[i]
+                        elif pdbdata[4][i-1]=='O':
+                            O=O+[i]
+                            for k in l:
+
+                                if  i in k:
+                                    O=O+list(k)
                             # qqqq=neighbour(i,mol_Matrix,1,l)
                     
                             # for k in qqqq:

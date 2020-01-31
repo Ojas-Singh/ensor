@@ -4,6 +4,7 @@ import glob
 import subprocess
 import numpy as np 
 import time
+from termcolor import colored
 from lib import fragrr as fg
 from lib import pdb2con as chef
 from lib import plotter as plotter
@@ -16,15 +17,15 @@ from lib import mathfrag as mfg
 from lib import addh as h
 from lib import inputexport as inputexp
 from lib import congugate 
-print " "
-print "  ______ _   _  _____  ____  _____   "
-print " |  ____| \ | |/ ____|/ __ \|  __ \  "
-print " | |__  |  \| | (___ | |  | | |__) | "
-print " |  __| | . ` |\___ \| |  | |  _  /  "
-print " | |____| |\  |____) | |__| | | \ \  "
-print " |______|_| \_|_____/ \____/|_|  \_\ "
-print "                                     "
-print "https://github.com/Ojas-Singh/ensor  "
+print colored('', 'yellow')
+print colored("  ______ _   _  _____  ____  _____   ", 'yellow')
+print colored(" |  ____| \ | |/ ____|/ __ \|  __ \  ", 'yellow')
+print colored(" | |__  |  \| | (___ | |  | | |__) | ", 'yellow')
+print colored(" |  __| | . ` |\___ \| |  | |  _  /  ", 'yellow')
+print colored(" | |____| |\  |____) | |__| | | \ \  ", 'yellow')
+print colored(" |______|_| \_|_____/ \____/|_|  \_\ ", 'yellow')
+print colored("                                     ", 'yellow')
+print colored("https://github.com/Ojas-Singh/ensor  ", 'green')
 
 
 
@@ -43,7 +44,7 @@ def main():
         if sys.argv[i]=='-overlap':
             overw=float(sys.argv[i+1])
     if len(sys.argv) == 1:
-        print "use -help to explore options"
+        print colored("use -help to explore options", 'yellow')
     elif sys.argv[1] == '-help' or sys.argv[1]=='-h':
         print "Options For ENSOR:"
         print "usage: ensor.py PATH-TO-FILE -option1 -option2 ... "
@@ -79,8 +80,8 @@ def main():
         for x in final:
             if len(x[1])!=0:
                 s=s+1
-                print "Part :",x[0],"have :", len(x[1])
-        print "total frag+overlapfrag :",s
+                print colored("Part :", 'blue'),x[0], colored("have :", 'blue'), len(x[1])
+        print colored("total frag+overlapfrag :", 'blue'),s
         
 
         
@@ -96,12 +97,12 @@ def main():
             com=glob.glob("input/part*.com")
             for i in com:
                 t1=time.time()
-                print "Processing :",i
+                print colored("Processing :", 'blue'),colored(i, 'cyan')
                 crname=i.replace('input/','')
                 crname=crname.replace('.com','')
                 subprocess.call(['g09',i,crname,'out'])
                 t2=time.time()
-                print "Done in :",t2-t1
+                print colored("Done in :", 'green'),t2-t1
 
 
             out=glob.glob('input/part*.log')
@@ -124,9 +125,9 @@ def main():
                     totE+=magE
                 else:
                     totE-=magE
-            print totE
+            print colored(totE, 'red')
             tfinal=time.time()
-            print "Total execution time :",tfinal-t0        
+            print colored("Total execution time :", 'blue'),colored(tfinal-t0, 'green')        
         
 
 

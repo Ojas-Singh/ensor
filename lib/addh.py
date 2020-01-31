@@ -2,7 +2,7 @@ import copy
 from copy import deepcopy
 
 def addhvector(Vf,Vm):
-    h=1.05
+    h=1.09
     
     d=((Vm[0]-Vf[0])**2 + (Vm[1]-Vf[1])**2 + (Vm[2]-Vf[2])**2)**(0.5)
     if d>0:
