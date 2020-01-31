@@ -6,6 +6,7 @@ import numpy as np
 import time
 from termcolor import colored
 from alive_progress import alive_bar
+import datetime
 from lib import fragrr as fg
 from lib import pdb2con as chef
 from lib import plotter as plotter
@@ -130,8 +131,12 @@ def main():
                     totE-=magE
             print colored(totE, 'red')
             tfinal=time.time()
-            print colored("Total execution time :", 'blue'),colored(tfinal-t0, 'green')        
+            print colored("Total execution time :", 'blue'),colored(tfinal-t0, 'green')      
+        rname=filename.strip(".pdb")+"_p_"+str(p)+str(datetime.datetime.now())  
         
+        r = open("data/"+rname, "a")
+        r.write("file to store data for ML")
+        r.close()
 
 
 files = glob.glob('results/*')
