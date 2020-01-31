@@ -40,12 +40,14 @@ def system(mol_Matrix,Dmol_Matrix):
             if mol_Matrix[i][j]==2 :
                 d.append([i+1,j+1])
     l=l+d
+   
     for i in range(len(rings)):
         a=[]
         for j in rings[i]:
             a.append(j+1)
         l.append(a)
+    
     X = to_graph(l)
-    return connected_components(X)
+    return list(connected_components(X))
 
 

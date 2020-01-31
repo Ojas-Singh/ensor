@@ -19,6 +19,7 @@ from lib import mathfrag as mfg
 from lib import addh as h
 from lib import inputexport as inputexp
 from lib import congugate 
+from lib import resofrag as rsfg
 print colored('', 'yellow')
 print colored("  ______ _   _  _____  ____  _____   ", 'yellow')
 print colored(" |  ____| \ | |/ ____|/ __ \|  __ \  ", 'yellow')
@@ -36,6 +37,7 @@ def main():
     calc=False
     ring=True
     overw=1
+    W=5
     for i in range(len(sys.argv)):
         if sys.argv[i]=='-p':
             p=int(sys.argv[i+1])
@@ -45,6 +47,8 @@ def main():
             ring=False
         if sys.argv[i]=='-overlap':
             overw=float(sys.argv[i+1])
+        if sys.argv[i]=='-W':
+            W=float(sys.argv[i+1])
     if len(sys.argv) == 1:
         print colored("use -help to explore options", 'yellow')
     elif sys.argv[1] == '-help' or sys.argv[1]=='-h':
@@ -55,12 +59,12 @@ def main():
         print ""
     else:
 
-
+        
 
         t0=time.time()
         script = sys.argv[0]
         filename = sys.argv[1]
-        pdbdata= chef.pdb2con(filename)
+        pdbdata= chef.pdb2con(filename,W)
         ##########_ Matrices #########################
         Adj_Matrix=np.load('results/Con_matrix.npy')
         mol_Matrix=np.load('results/mol_matrix.npy')
@@ -71,8 +75,8 @@ def main():
         if ring:
             l=list(congugate.system(mol_Matrix,Dmol_Matrix))
 
-        
-        frag=fg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw)
+    
+        frag=rsfg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw)
         Parts=frag[0]
         
         final=intsection.func(Parts)

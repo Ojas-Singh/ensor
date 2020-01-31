@@ -5,8 +5,8 @@
 ##                              http://www.wiredchemist.com/chemistry/data/bond_energies_lengths.html                      ##
 #############################################################################################################################
 
-def search(name):
-    l=[0,0,5]
+def search(name,W):
+    l=[0,0,W]
     if name=='CH' or name=='HC':
         l[0]=1.09
         l[1]=411

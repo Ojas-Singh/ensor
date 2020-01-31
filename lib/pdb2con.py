@@ -16,7 +16,7 @@ pdbdata=[N,X,Y,Z,A]
 
 
 
-def pdb2con(filename):
+def pdb2con(filename,W):
     with open(filename, 'r') as f:
             lines = f.readlines()
             l=[]
@@ -50,7 +50,7 @@ def pdb2con(filename):
                         z2=pdbdata[3][j]
                         d=((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2)**(0.5)
                         name= str(pdbdata[4][i])+str(pdbdata[4][j])
-                        bd= bld.search(name)
+                        bd= bld.search(name,W)
                         b1=bd[1]
                         b0=bd[0]
                         b2=bd[2]
