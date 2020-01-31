@@ -84,7 +84,7 @@ def overlap(M,n,F,w,main,a,b,l):
         if Con_matrix[i[0]-1][i[1]-1] >= w:
             bonding_broke.append(i)
     x=listcorrect(bonding_broke)
-    pixel=grid(M,5,main)
+    pixel=grid(main,5,main)
     pAo=[]
     pBo=[]
     o=[]

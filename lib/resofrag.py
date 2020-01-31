@@ -37,7 +37,7 @@ def cutter(M,X,main,pdbdata,l,mol_Matrix,w):
             if M[0][i][j]!=0 and partition[i]!=partition[j]:
                 x.append([M[1][i],M[1][j]])
     # OO=op.overlap(x,aa,bb,main,pdbdata,l,mol_Matrix,w)
-    OO=rs.overlap(M,4,x,.1,main,aa,bb,l)
+    OO=rs.overlap(M,4,x,w,main,aa,bb,l)
     Na=OO[0]
     Nb=OO[1]
     A=np.zeros((len(Na),len(Na)))
