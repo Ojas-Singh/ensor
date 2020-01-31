@@ -38,6 +38,8 @@ def main():
     ring=True
     overw=1
     W=5
+    l=[]
+    res=4
     for i in range(len(sys.argv)):
         if sys.argv[i]=='-p':
             p=int(sys.argv[i+1])
@@ -45,6 +47,9 @@ def main():
             calc=True
         if sys.argv[i]=='-raw':
             ring=False
+        if sys.argv[i]=='-res':
+            res=int(sys.argv[i+1])
+
         if sys.argv[i]=='-overlap':
             overw=float(sys.argv[i+1])
         if sys.argv[i]=='-W':
@@ -76,7 +81,7 @@ def main():
             l=list(congugate.system(mol_Matrix,Dmol_Matrix))
 
     
-        frag=rsfg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw)
+        frag=rsfg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw,res)
         Parts=frag[0]
         
         final=intsection.func(Parts)

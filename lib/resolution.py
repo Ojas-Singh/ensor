@@ -28,7 +28,19 @@ def Laplacian_matrix(M):
     Degree_Matrix =  np.diag(np.ravel(np.sum(M,axis=1))) 
     laplacian_matrix = Degree_Matrix - M
     return laplacian_matrix
-
+        
+# def Laplacian_matrix(M):
+#     laplacian_matrix=np.zeros((len(M[0]),len(M[0])))
+#     D=np.sum(M,axis=1)
+#     for i in range(len(M)):
+#         for j in range(i):
+#             if i==j:
+#                 laplacian_matrix[i][j]=1
+#             else:
+#                 laplacian_matrix[i][j]=M[i][j]/np.sqrt(D[i]*D[j])
+                
+#     return laplacian_matrix
+    
 def into2(M,l,main):
     eigenvalues, eigenvectors = np.linalg.eigh(Laplacian_matrix(M))
     index_fnzev = np.argsort(eigenvalues)[1]
@@ -72,7 +84,8 @@ def grid(M,n,main):
         caller(pixel)
         pixel=Fragments
         Fragments=[]
-        
+
+    
     return pixel
 
 def overlap(M,n,F,w,main,a,b,l):
@@ -84,7 +97,7 @@ def overlap(M,n,F,w,main,a,b,l):
         if Con_matrix[i[0]-1][i[1]-1] >= w:
             bonding_broke.append(i)
     x=listcorrect(bonding_broke)
-    pixel=grid(main,5,main)
+    pixel=grid(main,n,main)
     pAo=[]
     pBo=[]
     o=[]
