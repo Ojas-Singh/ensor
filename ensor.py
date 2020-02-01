@@ -81,7 +81,7 @@ def main():
             l=list(congugate.system(mol_Matrix,Dmol_Matrix))
 
     
-        frag=rsfg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw,res)
+        frag=fg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw,res)
         Parts=frag[0]
         
         final=intsection.func(Parts)
@@ -104,6 +104,7 @@ def main():
         inputexp.export(qq[0],qq[2],qq[1])
         inputexp.export(pdbdata,Mol,final)
 
+        
         if calc:
             com=glob.glob("input/part*.com")
             with alive_bar(len(com),bar='smooth',spinner='dots_waves2') as bar:
@@ -141,11 +142,31 @@ def main():
             print colored(totE, 'red')
             tfinal=time.time()
             print colored("Total execution time :", 'blue'),colored(tfinal-t0, 'green')      
-        rname=filename.strip(".pdb")+"_p_"+str(p)+str(datetime.datetime.now())+'.dat'
-        
-        r = open("data/"+rname, "a")
-        r.write("file to store data for ML")
-        r.close()
+            rname=filename.strip(".pdb")+"_p_"+str(p)+str(datetime.datetime.now())+'.log'
+            
+            r = open("data/"+rname, "a")
+            
+            r.write("This DATA is generated on "+str(datetime.datetime.now())+"\n")
+            r.write("  ______ _   _  _____  ____  _____   "+"\n")
+            r.write(" |  ____| \ | |/ ____|/ __ \|  __ \  "+"\n")
+            r.write(" | |__  |  \| | (___ | |  | | |__) | "+"\n")
+            r.write(" |  __| | . ` |\___ \| |  | |  _  /  "+"\n")
+            r.write(" | |____| |\  |____) | |__| | | \ \  "+"\n")
+            r.write(" |______|_| \_|_____/ \____/|_|  \_\ "+"\n")
+            r.write("                                     "+"\n")
+            r.write("https://github.com/Ojas-Singh/ensor  "+"\n")
+            r.write("                                     "+"\n")
+            r.write("Molecule "+filename.strip(".pdb")+"\n")
+            r.write("System arg passed on the run."+"\n")
+            r.write("   "+str(sys.argv)+"\n")
+            while True:
+                try:
+                    r.write("Calculated Energy : "+str(totE)+"\n")
+                    r.write("Time taken by ENSOR : "+ str(tfinal-t0)+"\n")
+                    break
+                except ValueError:
+                    print("Oops! Try again with -g09 option to generate Valid log.")
+            r.close()
 
 
 files = glob.glob('results/*')

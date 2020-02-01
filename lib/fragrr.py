@@ -66,7 +66,7 @@ def nodes_edges(M):
                 edges=edges+1
     return nodes,edges
 
-def fragmenter(M,p,pdbdata,l,mol_Matrix,w):
+def fragmenter(M,p,pdbdata,l,mol_Matrix,w,res):
     Fragments=[]
     connections=[]
     X=[]
