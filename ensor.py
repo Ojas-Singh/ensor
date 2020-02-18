@@ -8,6 +8,8 @@ from termcolor import colored
 from alive_progress import alive_bar
 import datetime
 from lib import fragrr as fg
+from lib import frag2 as fg2
+from lib import fragment as fgg
 from lib import pdb2con as chef
 from lib import plotter as plotter
 from lib import xyzexport as xyz
@@ -80,8 +82,8 @@ def main():
         if ring:
             l=list(congugate.system(mol_Matrix,Dmol_Matrix))
 
-    
-        frag=fg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw,res)
+
+        frag=fgg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw,res)
         Parts=frag[0]
         
         final=intsection.func(Parts)
