@@ -13,36 +13,46 @@ def degreeofnode(node,frag,Molecule,Con_matrix):
     for i in frag:
         degree = degree - Con_matrix[node-1][i-1]
     return float((Laplacian_matrix(Con_matrix)[node-1][node-1]-degree)/Laplacian_matrix(Con_matrix)[node-1][node-1])
-            
+
+def looper(Overlap,frag,Molecule,Wn,r,Rg,Con_matrix):
+    N=[]
+    NN=[]
+    for i in Overlap:
+        N = N + neighbour(i,Con_matrix,Wn,Rg)
+    Overlap = Overlap + N + NN
+    fragintMolecule = [item for item in Molecule if item not in frag]
+    for i in fragintMolecule:
+        if degreeofnode(i,frag+Overlap,Molecule,Con_matrix) > r :
+            NN = NN + [i]
+        Overlap = Overlap + NN 
+        Overlap = unique(Overlap)
+
+    return Overlap        
 
 def overlap(F,A,M,pdbdata,l,mol_Matrix,w):
-
+    bonding_broke=[]
     Con_matrix=M[0]
     frag = A
     Molecule = M[1]
     fragintMolecule = [item for item in Molecule if item not in frag]
     Overlap = []
     FragmentwithOverlap = frag + Overlap
- 
-    for i in fragintMolecule:
-        # print degreeofnode(i,FragmentwthOverlap,Molecule,Con_matrix)
-        if degreeofnode(i,FragmentwithOverlap,Molecule,Con_matrix) > w :
-            # print degreeofnode(i,FragmentwithOverlap,Molecule,Con_matrix)
-            Overlap = Overlap + [i]
-        FragmentwithOverlap = frag + Overlap    
-
-
-
-
- 
-
+    for i in F:
+        if i[0] in A or i[1] in A:
+            if Con_matrix[i[0]-1][i[1]-1] >= w:
+                bonding_broke.append(i)
+    x = listcorrect(bonding_broke)
+    Overlap = [item[0] for item in x] + [item[1] for item in x]
+    Overlap = looper(Overlap,frag,Molecule,.9,.5,l,Con_matrix)
+    # Overlap = looper(Overlap,frag,Molecule,.9,.5,l,Con_matrix)
     Overlap = unique(Overlap)
     FragmentwithOverlap = unique(FragmentwithOverlap)
     FragmentwithOverlap = frag + Overlap
     
-    print len(FragmentwithOverlap)
-
     return FragmentwithOverlap
+
+
+
 
 def bonding_list(F,Con_matrix):
     w=1
