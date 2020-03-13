@@ -7,19 +7,16 @@ import time
 from termcolor import colored
 from alive_progress import alive_bar
 import datetime
-from lib import fragrr as fg
+from lib import fragment as fg
 from lib import pdb2con as chef
-from lib import plotter as plotter
-from lib import xyzexport as xyz
-from lib import xyzexport2 as xyz2
+from lib import xyzexport_H as xyzH
+from lib import xyzexport_M as xyzM
 from lib import overlap as op
-from lib import venn as intsection
+from lib import intersection as intersection
 from lib import Ecal as ec
-from lib import mathfrag as mfg
 from lib import addh as h
 from lib import inputexport as inputexp
-from lib import congugate 
-from lib import resofrag as rsfg
+from lib import reducedgraph as rg
 print colored('', 'yellow')
 print colored("  ______ _   _  _____  ____  _____   ", 'yellow')
 print colored(" |  ____| \ | |/ ____|/ __ \|  __ \  ", 'yellow')
@@ -35,7 +32,7 @@ print colored("https://github.com/Ojas-Singh/ensor  ", 'green')
 def main():
     p=0
     calc=False
-    ring=True
+    rgenable=True
     overw=1
     W=5
     l=[]
@@ -69,47 +66,47 @@ def main():
         t0=time.time()
         script = sys.argv[0]
         filename = sys.argv[1]
-        pdbdata= chef.pdb2con(filename,W)
-        ##########_ Matrices #########################
-        Adj_Matrix=np.load('results/Con_matrix.npy')
-        mol_Matrix=np.load('results/mol_matrix.npy')
-        Dmol_Matrix=np.load('results/Dmol_matrix.npy')
-        nonbonmat=np.load('results/Adj_matrix.npy')
+        pdbdata = chef.pdb2con(filename,W)
+        ##########_ Matrices _#########################
+        Adj_Matrix = np.load('temp/Con_matrix.npy')
+        mol_Matrix = np.load('temp/mol_matrix.npy')
+        Dmol_Matrix = np.load('temp/Dmol_matrix.npy')
+        nonbonmat = np.load('temp/Adj_matrix.npy')
         ##############################################
         Mol=[Adj_Matrix,pdbdata[0]]
-        if ring:
-            l=list(congugate.system(mol_Matrix,Dmol_Matrix))
+        if rgenable :
+            l = list(rg.system(mol_Matrix,Dmol_Matrix))
 
-    
-        frag=fg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw,res)
-        Parts=frag[0]
+
+        frag = fg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw,res)
+        Parts = frag[0]
         
-        final=intsection.func(Parts)
+        final = intersection.func(Parts)
 
 
         s=0
         for x in final:
             if len(x[1])!=0:
-                s=s+1
+                s = s + 1
                 print colored("Part :", 'blue'),x[0], colored("have :", 'blue'), len(x[1])
         print colored("total frag+overlapfrag :", 'blue'),s
         
 
         
         ec.func(nonbonmat,final)
-        xyz2.export(pdbdata,Mol,final)
-        M=[mol_Matrix,Mol[1]]
-        qq=h.addh(pdbdata,final,M,1)
-        xyz.export(qq[0],qq[2],qq[1])
+        xyzM.export(pdbdata,Mol,final)
+        M = [mol_Matrix,Mol[1]]
+        qq = h.addh(pdbdata,final,M,1)
+        xyzH.export(qq[0],qq[2],qq[1])
         inputexp.export(qq[0],qq[2],qq[1])
         inputexp.export(pdbdata,Mol,final)
 
         
         if calc:
-            com=glob.glob("input/part*.com")
+            com = glob.glob("input/part*.com")
             with alive_bar(len(com),bar='smooth',spinner='dots_waves2') as bar:
                 for i in com:
-                    t1=time.time()
+                    t1 = time.time()
                     print colored("Processing :", 'blue'),colored(i, 'cyan')
                     crname=i.replace('input/','')
                     crname=crname.replace('.com','')
@@ -169,7 +166,7 @@ def main():
             r.close()
 
 
-files = glob.glob('results/*')
+files = glob.glob('XYZ/*')
 for f in files:
     os.remove(f)
         

@@ -55,7 +55,7 @@ def pdb2con(filename,W):
                         b0=bd[0]
                         b2=bd[2]
                         if b0==0:
-                            print name
+                            print "Update the Bondlength database for :",name
                         w=b2**(1-(d/b0)**2) #gaussian function
                         
                         if d <= b0+.1 :
@@ -91,12 +91,12 @@ def pdb2con(filename,W):
                      
             print colored('Total Atom in PDB :', 'blue'),len(pdbdata[0])         
     Con_matrix= TemporaryFile()
-    np.save('results/Con_matrix.npy',Connectivity_Matrix)
+    np.save('temp/Con_matrix.npy',Connectivity_Matrix)
     Adj_matrix= TemporaryFile()
-    np.save('results/Adj_matrix.npy',Adj_Matrix)
+    np.save('temp/Adj_matrix.npy',Adj_Matrix)
     mol_matrix= TemporaryFile()
-    np.save('results/mol_matrix.npy',mol_Matrix)
+    np.save('temp/mol_matrix.npy',mol_Matrix)
     Dmol_matrix= TemporaryFile()
-    np.save('results/Dmol_matrix.npy',Dmol_Matrix)
+    np.save('temp/Dmol_matrix.npy',Dmol_Matrix)
     
     return pdbdata

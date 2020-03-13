@@ -1,7 +1,8 @@
 numpy
-scipy
 matplotlib
 progressbar
 networkx
-panda
 random
+termcolor
+alive_progress
+glob
