@@ -5,6 +5,7 @@ from termcolor import colored
 import bondlength as bld
 from tempfile import TemporaryFile
 from alive_progress import alive_bar
+import config
 
 N=[]  #ATOM Number
 X=[]  # X Coordinate
@@ -16,7 +17,7 @@ pdbdata=[N,X,Y,Z,A]
 
 
 
-def pdb2con(filename,W):
+def do(filename,W):
     with open(filename, 'r') as f:
             lines = f.readlines()
             l=[]
@@ -32,10 +33,9 @@ def pdb2con(filename,W):
                     i+=1
             o = len(pdbdata[0])
             Connectivity_Matrix = np.zeros((o,o))
-            Adj_Matrix = np.zeros((o,o))
+            NB_Matrix = np.zeros((o,o))
             mol_Matrix = np.zeros((o,o))
             Dmol_Matrix = np.zeros((o,o))
-            
             
             with alive_bar(len(range(0,o))+1) as bar:
                 bar('Computing Connectivity Matrix.')
@@ -85,15 +85,15 @@ def pdb2con(filename,W):
                             Connectivity_Matrix[j][i]=w
 
                         if b0 <= d <= 4:
-                            Adj_Matrix[i][j]=1
-                            Adj_Matrix[j][i]=1 
+                            NB_Matrix[i][j]=1
+                            NB_Matrix[j][i]=1 
                     bar() 
                      
             print colored('Total Atom in PDB :', 'blue'),len(pdbdata[0])         
     Con_matrix= TemporaryFile()
     np.save('temp/Con_matrix.npy',Connectivity_Matrix)
-    Adj_matrix= TemporaryFile()
-    np.save('temp/Adj_matrix.npy',Adj_Matrix)
+    NB_matrix= TemporaryFile()
+    np.save('temp/NB_matrix.npy',NB_Matrix)
     mol_matrix= TemporaryFile()
     np.save('temp/mol_matrix.npy',mol_Matrix)
     Dmol_matrix= TemporaryFile()
