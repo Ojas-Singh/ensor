@@ -7,7 +7,13 @@ import time
 from termcolor import colored
 from alive_progress import alive_bar
 import datetime
+<<<<<<< HEAD
 from lib import fragment as fg
+=======
+from lib import fragrr as fg
+from lib import frag2 as fg2
+from lib import fragment as fgg
+>>>>>>> 2e49609721bae17fc1ba1ea9609f549617dbb479
 from lib import pdb2con as chef
 from lib import xyzexport_H as xyzH
 from lib import xyzexport_M as xyzM
@@ -78,8 +84,13 @@ def main():
             l = list(rg.system(mol_Matrix,Dmol_Matrix))
 
 
+<<<<<<< HEAD
         frag = fg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw,res)
         Parts = frag[0]
+=======
+        frag=fgg.fragmenter(Mol,p,pdbdata,l,mol_Matrix,overw,res)
+        Parts=frag[0]
+>>>>>>> 2e49609721bae17fc1ba1ea9609f549617dbb479
         
         final = intersection.func(Parts)
 
