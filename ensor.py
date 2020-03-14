@@ -19,27 +19,13 @@ print colored("https://github.com/Ojas-Singh/ensor  ", 'green')
 
 
 def main():
-    p=0
-    calc=False
-    rgenable=True
-    overw=1
-    W=5
-    l=[]
-    res=4
+
     for i in range(len(sys.argv)):
         if sys.argv[i]=='-p':
             p=int(sys.argv[i+1])
         if sys.argv[i]=='-g09':
             calc=True
         if sys.argv[i]=='-raw':
-            ring=False
-        if sys.argv[i]=='-res':
-            res=int(sys.argv[i+1])
-
-        if sys.argv[i]=='-overlap':
-            overw=float(sys.argv[i+1])
-        if sys.argv[i]=='-W':
-            W=float(sys.argv[i+1])
     if len(sys.argv) == 1:
         print colored("use -help to explore options", 'yellow')
     elif sys.argv[1] == '-help' or sys.argv[1]=='-h':
@@ -50,7 +36,7 @@ def main():
         print ""
     else:
 
-        core.process(sys.argv[1])
+        Q = core.process(sys.argv[1])  # Q[0] =  , Q[1] = , Q[2] = 
 
         t0=time.time()
         

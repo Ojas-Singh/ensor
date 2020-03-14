@@ -31,7 +31,14 @@ def process(filename):
             s=s+1
             print colored("Part :", 'blue'),x[0], colored("have :", 'blue'), len(x[1])
     print colored("total frag+overlapfrag :", 'blue'),s
-    return 
+
+
+    xyzexport_M.export(pdbdata,Mol,final)
+    M=[Mol_Matrix,Mol[1]]
+    qq=addh.addh(pdbdata,final,M,1)
+    xyzexport_H.export(qq[0],qq[2],qq[1])
+
+    return qq
 
 
 

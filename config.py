@@ -4,7 +4,7 @@ weight = 5
 
 rg_enable = True
 
-parts = 3
+parts = 1
 
 overlap = 0.0001
 
