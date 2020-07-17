@@ -20,11 +20,11 @@ def process(filename,n):
 
     # algo to decide n 
 
-    f = label.SGP(pdbdata,n)
+    f = label.SGP(pdbdata,n,Con_Matrix)
     # f = [f1,f2,f3,f4...,fn]
-    for i in range(5,26):
+    for i in range(5,44):
         print i," for",overlap.Ir(i,f,pdbdata,Con_Matrix)
-    F = overlap.Fr(f,pdbdata,Con_Matrix,11)  # need idea !
+    F = overlap.Fr(f,pdbdata,Con_Matrix,37)  # need idea !
     # F = [F1,F2,F3,F4...,Fn]
 
     final = intersection.func(F)
