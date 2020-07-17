@@ -6,7 +6,8 @@ from termcolor import colored
 
 
 
-def process(filename):
+def process(filename,n):
+    #phase 1
     pdbdata= pdb2con.do(filename,config.weight)
     # N=[]  #ATOM Number
     # X=[]  # X Coordinate
@@ -16,15 +17,21 @@ def process(filename):
     # pdbdata=[N,X,Y,Z,A]
     Con_Matrix = np.load('temp/Con_matrix.npy')
     Mol_Matrix = np.load('temp/mol_matrix.npy')
-    Dmol_Matrix = np.load('temp/Dmol_matrix.npy')
-    NB_Matrix = np.load('temp/NB_matrix.npy')
 
-    Mol=[Con_Matrix,pdbdata[0]]
-    l=[]
-    if config.rg_enable :
-        l = list(reducedgraph.system(Mol_Matrix,Dmol_Matrix))
-    final = intersection.func(fragment.fragmenter(Mol,config.parts,pdbdata,l,Mol_Matrix,config.overlap,config.res)[0])
+    # algo to decide n 
 
+    f = label.SGP(pdbdata,n)
+    # f = [f1,f2,f3,f4...,fn]
+    for i in range(5,26):
+        print i," for",overlap.Ir(i,f,pdbdata,Con_Matrix)
+    F = overlap.Fr(f,pdbdata,Con_Matrix,11)  # need idea !
+    # F = [F1,F2,F3,F4...,Fn]
+
+    final = intersection.func(F)
+    # final = [[F1,F2,F3...Fn],[F1&F2,F2&F3,F1&Fn ...],[F1&F2&F3,F2&F3&F4,...],...[]]
+
+
+    #phase 2 
     s=0
     for x in final:
         if len(x[1])!=0:
@@ -32,12 +39,13 @@ def process(filename):
             print colored("Part :", 'blue'),x[0], colored("have :", 'blue'), len(x[1])
     print colored("total frag+overlapfrag :", 'blue'),s
 
-
+    Mol=[Mol_Matrix,pdbdata[0]]
     xyzexport_M.export(pdbdata,Mol,final)
-    M=[Mol_Matrix,Mol[1]]
+    M=[Mol_Matrix,pdbdata[0]]
     qq=addh.addh(pdbdata,final,M,1)
     xyzexport_H.export(qq[0],qq[2],qq[1])
-
+    
+    
     return qq
 
 

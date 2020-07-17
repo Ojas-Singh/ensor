@@ -6,7 +6,8 @@ def all_subsets(ss):
     return chain(*map(lambda x: combinations(ss, x), range(0, len(ss)+1)))
 
 
-def func(Parts):
+def func(F):
+    Parts = f2p(F)
     n=len(Parts)
     final=[]
     #Final=[[f1,f2,f3...fn],[f1&f2,f2&f3,f1&fn ...],[f1&f2&f3,f2&f3&f4,...],...[]]
@@ -28,6 +29,31 @@ def func(Parts):
     
     return final
         
+def f2p(F):
+    Parts = []
+    for i in range(len(F)):
+        Parts.append([i,F[i]])
+    return Parts
 
 
-    
+# def funk(F,pdbdata):
+#     final = []
+#     for i in range(len(F)):
+#         final.append([])
+#     for i in pdbdata[0]:
+#         for j in F:
+#             if i in j :
+
+
+
+#     return final 
+
+
+
+def get_subsets(fullset):
+  listrep = list(fullset)
+  n = len(listrep)
+  return [[listrep[k] for k in range(n) if i&1<<k] for i in range(2**n)]
+
+
+

@@ -33,7 +33,7 @@ def addh(pdbdata,final,Mol,w):
             for i in pdbdata[0]:
                 if i not in final[x][1]:
                     for j in final[x][1]:
-                        if Mol[0][i-1][j-1] == w:
+                        if Mol[0][i-1][j-1] >= w:
                             v1=[pdbdata[1][j-1],pdbdata[2][j-1],pdbdata[3][j-1]]
                             v2=[pdbdata[1][i-1],pdbdata[2][i-1],pdbdata[3][i-1]]
                             num=len(N)

@@ -1,9 +1,12 @@
+#!/usr/bin/python
+
 import sys,os,glob,subprocess,time,datetime
 import numpy as np 
 import ensor_core as core
 import config as config
 from termcolor import colored
 from alive_progress import alive_bar
+from lib import *
 
 
 print colored('', 'yellow')
@@ -21,11 +24,10 @@ print colored("https://github.com/Ojas-Singh/ensor  ", 'green')
 def main():
 
     for i in range(len(sys.argv)):
-        if sys.argv[i]=='-p':
-            p=int(sys.argv[i+1])
+        if sys.argv[i]=='-n':
+            n=int(sys.argv[i+1])
         if sys.argv[i]=='-g09':
             calc=True
-        if sys.argv[i]=='-raw':
     if len(sys.argv) == 1:
         print colored("use -help to explore options", 'yellow')
     elif sys.argv[1] == '-help' or sys.argv[1]=='-h':
@@ -36,8 +38,8 @@ def main():
         print ""
     else:
 
-        Q = core.process(sys.argv[1])  # Q[0] =  , Q[1] = , Q[2] = 
-
+        Q = core.process(sys.argv[1],n)  # Q[0] =  , Q[1] = , Q[2] = 
+        inputexport.export(Q[0],Q[2],Q[1])
         t0=time.time()
         
 
