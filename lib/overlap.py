@@ -35,7 +35,7 @@ def Io(Fi,fi,pdbdata,Con_Matrix):
 
 def Fr(f,pdbdata,Con_Matrix,r):
     F = []
-    R = label.SGP(pdbdata,r)
+    R = label.SGP(pdbdata,r,Con_Matrix)
     # R = [R1,R2,R3...,Rr]
     for fi in f:
         Fi = fi
