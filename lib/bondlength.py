@@ -11,7 +11,7 @@ def search(name,W):
         l[0]=1.09
         l[1]=411
     if name=='CC' or name=='CC':
-        l[0]=1.54
+        l[0]=1.6
         l[1]=346
     if name=='CN' or name=='NC':
         l[0]=1.47
