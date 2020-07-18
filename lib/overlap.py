@@ -32,7 +32,7 @@ def Io(Fi,fi,pdbdata,Con_Matrix):
     for i in Oi:
         for j in notOi:
             s = s + Con_Matrix[i-1][j-1]
-    return s*len(Oi)
+    return s
 
 def Fr(f,pdbdata,Con_Matrix,r):
     F = []

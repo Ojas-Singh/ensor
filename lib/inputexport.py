@@ -56,7 +56,7 @@ def export(pdbdata,G,F):
         if len(F[x][1])!=0:
             p= open("input/part"+name(F[x][0])+".com","w+")
             p.write("%chk=part"+name(F[x][0])+".chk"+"\n")
-            p.write("%nproc=6\n")
+            p.write("%nproc=8\n")
             p.write("# hf/3-21g force \n")
             p.write("\n")
             p.write("Part"+str(F[x][0])+"Frag\n")
