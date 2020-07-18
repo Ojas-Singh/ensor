@@ -22,9 +22,8 @@ def process(filename,n):
 
     f = label.SGP(pdbdata,n,Con_Matrix)
     # f = [f1,f2,f3,f4...,fn]
-    for i in range(5,44):
-        print i," for",overlap.Ir(i,f,pdbdata,Con_Matrix)
-    F = overlap.Fr(f,pdbdata,Con_Matrix,37)  # need idea !
+
+    F = overlap.Fr(f,pdbdata,Con_Matrix,overlap.rselector(f,pdbdata,Con_Matrix))  # need idea !
     # F = [F1,F2,F3,F4...,Fn]
 
     final = intersection.func(F)

@@ -1,15 +1,16 @@
 import label
 
 
-# def rselector(f,pdbdata,Con_Matrix):
-#     for r in range()
-#     return r
+def rselector(f,pdbdata,Con_Matrix):
+    ir = []
+    for r in range(5,int(len(pdbdata[0])/3)):
+        
+        ir.append((Ir(r,f,pdbdata,Con_Matrix),r))
+        print "For r : ",r,"Ir is : ",ir[r-5][0]
+    sir = sorted(ir,  key=lambda tup: tup[0]) 
+    print "Selected R is ",sir[0][1] 
+    return sir[0][1]
 
-def Global(pdbdata,fi,Con_Matrix):
-    Ov = Om(pdbdata,fi,Con_Matrix)
-
-
-    return Ov
 
 def Om(pdbdata,fi,Con_Matrix):
     l = []
