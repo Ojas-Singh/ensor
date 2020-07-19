@@ -3,10 +3,10 @@ import label
 
 def rselector(f,pdbdata,Con_Matrix):
     ir = []
-    for r in range(5,int(len(pdbdata[0])/2)):
+    for r in range(int(len(pdbdata[0])/20),int(len(pdbdata[0])/4)):
         
         ir.append((Ir(r,f,pdbdata,Con_Matrix),r))
-        print "For r : ",r,"Ir is : ",ir[r-5][0]
+        print "For r : ",r,"Ir is : ",ir[r-int(len(pdbdata[0])/20)][0]
     sir = sorted(ir,  key=lambda tup: tup[0]) 
     print "Selected R is ",sir[0][1] 
     return sir[0][1]
@@ -18,7 +18,7 @@ def Om(pdbdata,fi,Con_Matrix):
     for i in fi:
         for j in k:
 
-            if Con_Matrix[i-1][j-1] >= 0.1 :
+            if Con_Matrix[i-1][j-1] >= 0.001 :
                 l.append(j) 
                 l.append(i)
     ll = set(l)
