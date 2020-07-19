@@ -52,7 +52,7 @@ def Ir(r,f,pdbdata,Con_Matrix):
     Itotal = 0
     for Fi in Frr:
         for fi in f:
-            Itotal = Itotal + Io(Fi,fi,pdbdata,Con_Matrix)
+            Itotal = Itotal + Io(list(set(Fi)),list(set(fi)),pdbdata,Con_Matrix)
 
     return Itotal
 
