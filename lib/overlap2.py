@@ -16,7 +16,7 @@ def inflation(f,pdbdata,Con_Matrix):
                     if i in j:
                         Fi = Fi + j
             
-            ir.append((Io(Fi,fi,pdbdata,Con_Matrix),r))
+            ir.append((Io(list(set(Fi)),list(set(fi)),pdbdata,Con_Matrix),r))
         sir = sorted(ir,  key=lambda tup: tup[0])
         F.append(fi2Fi(sir[0][1],fi,pdbdata,Con_Matrix))
         print sir[0][1]
