@@ -51,7 +51,7 @@ def Om(pdbdata,fi,Con_Matrix):
     for i in fi:
         for j in k:
 
-            if Con_Matrix[i-1][j-1] >= 0.1 :
+            if Con_Matrix[i-1][j-1] >= 0.001 :
                 l.append(j) 
                 l.append(i)
     ll = set(l)
