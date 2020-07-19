@@ -3,7 +3,7 @@ import label
 
 def rselector(f,pdbdata,Con_Matrix):
     ir = []
-    for r in range(5,int(len(pdbdata[0])/3)):
+    for r in range(5,int(len(pdbdata[0])/2)):
         
         ir.append((Ir(r,f,pdbdata,Con_Matrix),r))
         print "For r : ",r,"Ir is : ",ir[r-5][0]
