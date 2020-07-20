@@ -7,7 +7,7 @@ def inflation(f,pdbdata,Con_Matrix):
         ir = []
         
         
-        for r in range(5,int(len(pdbdata[0])/4)):
+        for r in range(int(len(pdbdata[0])/20),int(len(pdbdata[0])/8)):
             Fi = []
             Fi = fi
             R = label.SGPW(pdbdata,r,Con_Matrix)
