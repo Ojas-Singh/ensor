@@ -23,13 +23,13 @@ def process(filename,n):
     f = label.SGP(pdbdata,n,Con_Matrix)
     # f = [f1,f2,f3,f4...,fn]
 
-#     overlap.rselector(f,pdbdata,Con_Matrix)
-#     rinput = int(raw_input("Which R to use : "))
-#     F = overlap.Fr(f,pdbdata,Con_Matrix,rinput)  
+    overlap.rselector(f,pdbdata,Con_Matrix,Mol_Matrix)
+    rinput = int(raw_input("Which R to use : "))
+    F = overlap.Fr(f,pdbdata,Con_Matrix,rinput,Mol_Matrix)  
 
-    F = overlap2.inflation(f,pdbdata,Con_Matrix)
+    # F = overlap2.inflation(f,pdbdata,Con_Matrix)
     # F = [F1,F2,F3,F4...,Fn]
-
+    # F= f
     final = intersection.func(F)
     # final = [[F1,F2,F3...Fn],[F1&F2,F2&F3,F1&Fn ...],[F1&F2&F3,F2&F3&F4,...],...[]]
 

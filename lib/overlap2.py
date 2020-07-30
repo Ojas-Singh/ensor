@@ -7,7 +7,7 @@ def inflation(f,pdbdata,Con_Matrix):
         ir = []
         
         
-        for r in range(int(len(pdbdata[0])/20),int(len(pdbdata[0])/8)):
+        for r in range(int(len(pdbdata[0])/20),int(len(pdbdata[0])/10)):
             Fi = []
             Fi = fi
             R = label.SGPW(pdbdata,r,Con_Matrix)
@@ -51,7 +51,7 @@ def Om(pdbdata,fi,Con_Matrix):
     for i in fi:
         for j in k:
 
-            if Con_Matrix[i-1][j-1] >= 0.001 :
+            if Con_Matrix[i-1][j-1] >= 5 :
                 l.append(j) 
                 l.append(i)
     ll = set(l)

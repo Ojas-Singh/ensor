@@ -5,6 +5,7 @@ from termcolor import colored
 import bondlength as bld
 from tempfile import TemporaryFile
 from alive_progress import alive_bar
+from sklearn.preprocessing import normalize
 import config
 
 N=[]  #ATOM Number
@@ -17,7 +18,7 @@ pdbdata=[N,X,Y,Z,A]
 
 
 
-def do(filename,W):
+def do(filename,a):
     with open(filename, 'r') as f:
             lines = f.readlines()
             l=[]
@@ -48,42 +49,35 @@ def do(filename,W):
                         z2=pdbdata[3][j]
                         d=((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2)**(0.5)
                         name= str(pdbdata[4][i])+str(pdbdata[4][j])
-                        bd= bld.search(name,W)
-                        b1=bd[1]
-                        b0=bd[0]
-                        b2=bd[2]
-                        if b0==0:
-                            print "Update the Bondlength database for :",name
-                        w=b2**(1-(d/b0)**2) #gaussian function
+                        # bd= bld.search(name,W)
+                        # b1=bd[1]
+                        # b0=bd[0]
+                        # b2=bd[3]
+                        # if b0==0:
+                        #     print "Update the Bondlength database for :",name
+                        # w=b1*b2**(1-(d/b0)**2) #gaussian function
+                        w=bld.weight(name,a,d)                
+                        Connectivity_Matrix[i][j]=w
+                        Connectivity_Matrix[j][i]=w
+                        mol_Matrix[i][j]= d
+                        mol_Matrix[j][i]= d
                         
-                        if d <= b0+.1 :
+                        # if d <= b0+.1 :
                             
-                            mol_Matrix[i][j]= 1
-                            mol_Matrix[j][i]= 1
-                            Connectivity_Matrix[i][j]=w
-                            Connectivity_Matrix[j][i]=w
+                        #     mol_Matrix[i][j]= 1
+                        #     mol_Matrix[j][i]= 1
+                        #     Connectivity_Matrix[i][j]=w
+                        #     Connectivity_Matrix[j][i]=w
 
-                            if d<=b0-.05:
-                                mol_Matrix[i][j]= 2
-                                mol_Matrix[j][i]= 2
+                        #     if d<=b0-.05:
+                        #         mol_Matrix[i][j]= 2
+                        #         mol_Matrix[j][i]= 2
 
-                                
-                            
-                            
-                        if d==0:
-                            Connectivity_Matrix[i][j]=0 
-                            Connectivity_Matrix[j][i]=0
-
-
-
-                        else:
-                            
-                            Connectivity_Matrix[i][j]=w
-                            Connectivity_Matrix[j][i]=w
 
                     bar() 
                      
             print colored('Total Atom in PDB :', 'blue'),len(pdbdata[0])         
+    # Connectivity_Matrix=normalize(Connectivity_Matrix) 
     Con_matrix= TemporaryFile()
     np.save('temp/Con_matrix.npy',Connectivity_Matrix)
     mol_matrix= TemporaryFile()
