@@ -35,7 +35,7 @@ def do(filename,a):
             o = len(pdbdata[0])
             Connectivity_Matrix = np.zeros((o,o))
             mol_Matrix = np.zeros((o,o))
-            
+            D_Matrix = np.zeros((o,o))
             with alive_bar(len(range(0,o))+1) as bar:
                 bar('Computing Connectivity Matrix.')
                 for i in range(0,o):
@@ -49,29 +49,25 @@ def do(filename,a):
                         z2=pdbdata[3][j]
                         d=((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2)**(0.5)
                         name= str(pdbdata[4][i])+str(pdbdata[4][j])
-                        # bd= bld.search(name,W)
-                        # b1=bd[1]
-                        # b0=bd[0]
-                        # b2=bd[3]
+                        bd= bld.search(name)
+                        b0=bd[0][0]
                         # if b0==0:
                         #     print "Update the Bondlength database for :",name
                         # w=b1*b2**(1-(d/b0)**2) #gaussian function
                         w=bld.weight(name,a,d)                
                         Connectivity_Matrix[i][j]=w
                         Connectivity_Matrix[j][i]=w
-                        mol_Matrix[i][j]= d
-                        mol_Matrix[j][i]= d
+                        D_Matrix[i][j]= d
+                        D_Matrix[j][i]= d
                         
-                        # if d <= b0+.1 :
+                        if d <= b0+.1 :
                             
-                        #     mol_Matrix[i][j]= 1
-                        #     mol_Matrix[j][i]= 1
-                        #     Connectivity_Matrix[i][j]=w
-                        #     Connectivity_Matrix[j][i]=w
+                            mol_Matrix[i][j]= 1
+                            mol_Matrix[j][i]= 1
 
-                        #     if d<=b0-.05:
-                        #         mol_Matrix[i][j]= 2
-                        #         mol_Matrix[j][i]= 2
+                            if d <= b0-.05:
+                                mol_Matrix[i][j]= 2
+                                mol_Matrix[j][i]= 2
 
 
                     bar() 
@@ -81,6 +77,8 @@ def do(filename,a):
     Con_matrix= TemporaryFile()
     np.save('temp/Con_matrix.npy',Connectivity_Matrix)
     mol_matrix= TemporaryFile()
+    dis_Matrix =  TemporaryFile()
+    np.save('temp/dis_matrix.npy',D_Matrix)
     np.save('temp/mol_matrix.npy',mol_Matrix)
 
     

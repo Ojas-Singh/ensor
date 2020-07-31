@@ -17,15 +17,15 @@ def process(filename,n):
     # pdbdata=[N,X,Y,Z,A]
     Con_Matrix = np.load('temp/Con_matrix.npy')
     Mol_Matrix = np.load('temp/mol_matrix.npy')
-
+    D_Matrix = np.load('temp/dis_matrix.npy')
     # algo to decide n 
 
     f = label.SGP(pdbdata,n,Con_Matrix)
     # f = [f1,f2,f3,f4...,fn]
 
-    overlap.rselector(f,pdbdata,Con_Matrix,Mol_Matrix)
+    overlap.rselector(f,pdbdata,Con_Matrix,D_Matrix)
     rinput = int(raw_input("Which R to use : "))
-    F = overlap.Fr(f,pdbdata,Con_Matrix,rinput,Mol_Matrix)  
+    F = overlap.Fr(f,pdbdata,Con_Matrix,rinput,D_Matrix)  
 
     # F = overlap2.inflation(f,pdbdata,Con_Matrix)
     # F = [F1,F2,F3,F4...,Fn]
