@@ -3,7 +3,7 @@ import label
 
 def rselector(f,pdbdata,Con_Matrix,D_Matrix):
     ir = []
-    for r in range(int(len(pdbdata[0])/32),int(len(pdbdata[0])/6)):
+    for r in range(int(len(pdbdata[0])/32),int(len(pdbdata[0])/4)):
     
         
         ir.append((Ir(r,f,pdbdata,Con_Matrix,D_Matrix),r))
@@ -19,7 +19,7 @@ def Om(pdbdata,fi,Con_Matrix,D_Matrix):
     for i in fi:
         for j in k:
 
-            if Con_Matrix[i-1][j-1]>2 and D_Matrix[i-1][j-1] < 4 :
+            if D_Matrix[i-1][j-1] < 2.5 :
                 l.append(j) 
                 l.append(i)
     ll = set(l)
@@ -33,7 +33,8 @@ def Io(Fi,fi,pdbdata,Con_Matrix):
     for i in Oi:
         for j in notOi:
             s = s + Con_Matrix[i-1][j-1]
-    return s*(len(Oi))**(2.0/3)
+    # return s*(len(Oi))**(2.0/3)
+    return s
 
 def Fr(f,pdbdata,Con_Matrix,r,D_Matrix):
     F = []

@@ -1,7 +1,7 @@
 import label
 
 # unioqe
-def inflation(f,pdbdata,Con_Matrix):  
+def inflation(f,pdbdata,Con_Matrix,D_Matrix):  
     F=[]
     for fi in f:
         ir = []
@@ -11,21 +11,21 @@ def inflation(f,pdbdata,Con_Matrix):
             Fi = []
             Fi = fi
             R = label.SGPW(pdbdata,r,Con_Matrix)
-            for i in Om(pdbdata,fi,Con_Matrix):
+            for i in Om(pdbdata,fi,Con_Matrix,D_Matrix):
                 for j in R:
                     if i in j:
                         Fi = Fi + j
             
             ir.append((Io(list(set(Fi)),list(set(fi)),pdbdata,Con_Matrix),r))
         sir = sorted(ir,  key=lambda tup: tup[0])
-        F.append(fi2Fi(sir[0][1],fi,pdbdata,Con_Matrix))
+        F.append(fi2Fi(sir[0][1],fi,pdbdata,Con_Matrix,D_Matrix))
         print sir[0][1]
     return F
 
-def fi2Fi(r,fi,pdbdata,Con_Matrix):
+def fi2Fi(r,fi,pdbdata,Con_Matrix,D_Matrix):
     Fi = fi 
     R = label.SGPW(pdbdata,r,Con_Matrix)
-    for i in Om(pdbdata,fi,Con_Matrix):
+    for i in Om(pdbdata,fi,Con_Matrix,D_Matrix):
         for j in R:
             if i in j:
                 Fi = Fi + j
@@ -45,18 +45,17 @@ def rselector(f,pdbdata,Con_Matrix):
     return sir[0][1]
 
 
-def Om(pdbdata,fi,Con_Matrix):
+def Om(pdbdata,fi,Con_Matrix,D_Matrix):
     l = []
     k = [x for x in pdbdata[0] if x not in fi]
     for i in fi:
         for j in k:
 
-            if Con_Matrix[i-1][j-1] >= 5 :
+            if D_Matrix[i-1][j-1] < 2.5 :
                 l.append(j) 
                 l.append(i)
     ll = set(l)
     return list(ll)
-
 
 def Io(Fi,fi,pdbdata,Con_Matrix):
     s = 0.0
@@ -65,28 +64,29 @@ def Io(Fi,fi,pdbdata,Con_Matrix):
     for i in Oi:
         for j in notOi:
             s = s + Con_Matrix[i-1][j-1]
-    return s*len(Oi)
+    # return s*(len(Oi))**(2.0/3)
+    return s
 
-def Fr(f,pdbdata,Con_Matrix,r):
+def Fr(f,pdbdata,Con_Matrix,r,D_Matrix):
     F = []
     R = label.SGPW(pdbdata,r,Con_Matrix)
     # R = [R1,R2,R3...,Rr]
     for fi in f:
         Fi = fi
-        for i in Om(pdbdata,fi,Con_Matrix):
+        for i in Om(pdbdata,fi,Con_Matrix,D_Matrix):
             for j in R:
                 if i in j:
                     Fi = Fi + j
         F.append(Fi)
     return F
-
-def Ir(r,f,pdbdata,Con_Matrix):
-    Frr = Fr(f,pdbdata,Con_Matrix,r)
+def Ir(r,f,pdbdata,Con_Matrix,D_Matrix):
+    Frr = Fr(f,pdbdata,Con_Matrix,r,D_Matrix)
     Itotal = 0
     for Fi in Frr:
         for fi in f:
-            Itotal = Itotal + Io(Fi,fi,pdbdata,Con_Matrix)
+            Itotal = Itotal + Io(list(set(Fi)),list(set(fi)),pdbdata,Con_Matrix)
 
     return Itotal
+
 
 
