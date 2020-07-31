@@ -7,7 +7,8 @@ def inflation(f,pdbdata,Con_Matrix,D_Matrix):
         ir = []
         
         
-        for r in range(int(len(pdbdata[0])/20),int(len(pdbdata[0])/10)):
+        # for r in range(int(len(pdbdata[0])/32),int(len(pdbdata[0])/6)):
+        for r in range(10,40):
             Fi = []
             Fi = fi
             R = label.SGPW(pdbdata,r,Con_Matrix)
@@ -17,9 +18,12 @@ def inflation(f,pdbdata,Con_Matrix,D_Matrix):
                         Fi = Fi + j
             
             ir.append((Io(list(set(Fi)),list(set(fi)),pdbdata,Con_Matrix),r))
+            
         sir = sorted(ir,  key=lambda tup: tup[0])
-        F.append(fi2Fi(sir[0][1],fi,pdbdata,Con_Matrix,D_Matrix))
-        print sir[0][1]
+        print sir
+        ok = int(raw_input("Enter your choice !"))
+        # F.append(fi2Fi(sir[0][1],fi,pdbdata,Con_Matrix,D_Matrix))
+        F.append(fi2Fi(ok,fi,pdbdata,Con_Matrix,D_Matrix))
     return F
 
 def fi2Fi(r,fi,pdbdata,Con_Matrix,D_Matrix):
@@ -64,7 +68,7 @@ def Io(Fi,fi,pdbdata,Con_Matrix):
     for i in Oi:
         for j in notOi:
             s = s + Con_Matrix[i-1][j-1]
-    # return s*(len(Oi))**(2.0/3)
+    # return s*(len(Oi))**(1.0/5)
     return s
 
 def Fr(f,pdbdata,Con_Matrix,r,D_Matrix):

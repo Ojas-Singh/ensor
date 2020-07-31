@@ -18,7 +18,6 @@ def process(filename,n):
     Con_Matrix = np.load('temp/Con_matrix.npy')
     Mol_Matrix = np.load('temp/mol_matrix.npy')
     D_Matrix = np.load('temp/dis_matrix.npy')
-    print D_Matrix
     # algo to decide n 
 
     f = label.SGP(pdbdata,n,Con_Matrix)
