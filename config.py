@@ -1,6 +1,6 @@
 #This is Configuration File for ENSOR
 
-weight = 60
+weight = 1
 
 rg_enable = True
 

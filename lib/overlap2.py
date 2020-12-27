@@ -55,7 +55,8 @@ def Om(pdbdata,fi,Con_Matrix,D_Matrix):
     for i in fi:
         for j in k:
 
-            if D_Matrix[i-1][j-1] < 2.5 :
+            # if Con_Matrix[i-1][j-1]<20  and D_Matrix[i-1][j-1] < 2 :
+            if Con_Matrix[i-1][j-1]>20  and D_Matrix[i-1][j-1] < 2.2 :
                 l.append(j) 
                 l.append(i)
     ll = set(l)
@@ -68,7 +69,7 @@ def Io(Fi,fi,pdbdata,Con_Matrix):
     for i in Oi:
         for j in notOi:
             s = s + Con_Matrix[i-1][j-1]
-    # return s*(len(Oi))**(1.0/5)
+    # return s*(len(Oi))**(1.0/3)
     return s
 
 def Fr(f,pdbdata,Con_Matrix,r,D_Matrix):
